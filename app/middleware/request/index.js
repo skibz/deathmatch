@@ -5,13 +5,15 @@ var session = require('express-session');
 var bodyParser = require('body-parser');
 var multer = require('multer');
 
+var SESSION_SECRET = process.env.SESSION_SECRET;
+
 module.exports = function() {
   this.use(logger('dev'));
   this.use(methodOverride());
   this.use(session({
     resave: true,
     saveUninitialized: true,
-    secret: process.env.SESSION_SECRET || 'keyboard cat'
+    secret: SESSION_SECRET
   }));
   this.use(bodyParser.json());
   this.use(bodyParser.urlencoded({extended: true}));
