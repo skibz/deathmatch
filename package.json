@@ -1,14 +1,14 @@
 {
   "name": "deathmatch",
   "version": "0.0.0",
-  "description": "",
+  "description": "Start a fight.",
   "main": "index.js",
   "private": true,
   "scripts": {
     "test": "istanbul test _mocha -- -R spec",
-    "start": "./configure && node index.js",
-    "nodemon": "./configure-dev && nodemon index.js",
-    "coverage": "istanbul cover _mocha --report lcovonly -- test -R spec && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage"
+    "start": "./start",
+    "nodemon": "./nodemon",
+    "coverage": "istanbul cover _mocha --report lcovonly -- test -R spec && cat coverage/lcov.info | coveralls && rm -rf coverage"
   },
   "author": "Ant Cosentino <ant@io.co.za>",
   "license": "UNLICENSE",
