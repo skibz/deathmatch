@@ -1,0 +1,184 @@
+<div class="admin-commands">
+  <form id="player-add-form">
+    <select multiple>
+      <!-- todo, player list needs to update in real time -->
+    </select>
+    <input type="submit">
+    <script>
+      var playerAddForm = one('#player-add-form');
+      playerAddForm.onsubmit = function(e) {
+        e.preventDefault();
+
+        var selected = one(
+          '#player-add-form select'
+        ).selectedOptions.map(function(option) {
+          return option.value;
+        });
+
+        // socket.emit('admin-command player-add', {
+        //   authorisation: user.id,
+        //   players: selected
+        // });
+
+        playerAddForm.reset();
+      };
+    </script>
+  </form>
+
+  <form id="player-rem-form">
+    <select multiple>
+      <!-- todo, player list needs to update in real time -->
+    </select>
+    <input type="submit">
+    <script>
+      var playerRemForm = one('#player-rem-form');
+      playerRemForm.onsubmit = function(e) {
+        e.preventDefault();
+
+        var selected = one(
+          '#player-rem-form select'
+        ).selectedOptions.map(function(option) {
+          return option.value;
+        });
+
+        // socket.emit('admin-command player-rem', {
+        //   authorisation: user.id,
+        //   players: selected
+        // });
+
+        playerRemForm.reset();
+      };
+    </script>
+  </form>
+
+  <form id="assign-captains-form">
+    <select multiple>
+      <!-- todo, player list needs to update in real time -->
+    </select>
+    <input type="submit">
+    <script>
+      var assignCaptainForm = one('#assign-captain-form');
+      assignCaptainForm.onsubmit = function(e) {
+        e.preventDefault();
+
+        var selected = one(
+          '#assign-captain-form select'
+        ).selectedOptions.map(function(option) {
+          return option.value;
+        });
+
+        if (selected.length > 2 || selected.length < 1) {
+          alert('you gotta choose at least one person');
+        } else {
+          // socket.emit('admin-command assign-captain', {
+          //   authorisation: user.id,
+          //   captains: selected
+          // });
+
+          assignCaptainForm.reset();
+        }
+      };
+    </script>
+  </form>
+
+  <form id="map-form">
+    <select>
+      <!-- todo, add all map types here -->
+      <!-- todo, integrate with backend. map list has to be configurable -->
+      <optgroup id="map-type-mge" label=""></optgroup>
+      <optgroup id="map-type-pl" label=""></optgroup>
+      <optgroup id="map-type-plr" label=""></optgroup>
+      <optgroup id="map-type-ctf" label=""></optgroup>
+      <optgroup id="map-type-koth" label=""></optgroup>
+      <optgroup id="map-type-cp" label=""></optgroup>
+    </select>
+    <input type="submit">
+    <script>
+      var mapForm = one('#map-form');
+      mapForm.onsubmit = function(e) {
+        e.preventDefault();
+
+        // socket.emit('admin-command map', {
+        //   authorisation: user.id,
+        //   map: one('#map-form select').value
+        // });
+
+        mapForm.reset();
+      };
+    </script>
+  </form>
+
+  <form id="server-form">
+    <select>
+      <!-- todo, integrate with backend. server list has to be configurable -->
+      <optgroup label=""></optgroup>
+      <optgroup label=""></optgroup>
+    </select>
+    <input type="submit">
+    <script>
+      var serverForm = one('#server-form');
+      serverForm.onsubmit = function(e) {
+        e.preventDefault();
+
+        // socket.emit('admin-command server', {
+        //   authorisation: user.id,
+        //   server: one('#server-form select').value
+        // });
+
+        serverForm.reset();
+      };
+    </script>
+  </form>
+
+  <form id="game-format-form">
+    <input type="range" min="1" max="9">
+    <input type="submit">
+    <script>
+      var formatForm = one('#format-form');
+      formatForm.onsubmit = function(e) {
+        e.preventDefault();
+
+        // socket.emit('admin-command server', {
+        //   authorisation: user.id,
+        //   format: one('#format-form select').value
+        // });
+
+        formatForm.reset();
+      };
+    </script>
+  </form>
+
+  <form id="new-game-form">
+    <input type="submit">
+    <script>
+      var newGameForm = one('#new-game-form');
+      newGameForm.onsubmit = function(e) {
+        e.preventDefault();
+
+        // socket.emit('admin-command new-game', {
+        //   authorisation: user.id
+        // });
+
+        newGameForm.reset();
+      };
+    </script>
+  </form>
+
+  <form id="cancel-game-form">
+    <input type="submit">
+    <script>
+      var cancelGameForm = one('#cancel-game-form');
+      cancelGameForm.onsubmit = function(e) {
+        e.preventDefault();
+
+        if (confirm('sure you wanna cancel the current game?')) {
+          // socket.emit('admin-command cancel-game', {
+          //   authorisation: user.id
+          // });
+        }
+
+        cancelGameForm.reset();
+      };
+    </script>
+  </form>
+</div>
