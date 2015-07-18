@@ -1,0 +1,30 @@
+extends ./layout.jade
+
+block title
+  title deathmat.ch | home
+
+block content
+
+  include ./nav.jade
+
+  main(class="main messages")
+
+  form(id="message-form", class="chat-input")
+    textarea(id="message-input", class="message-input", rows="5", placeholder="Say something...")
+    input(class="chat-input-submit", type="submit", value="Send")
+
+block scripts
+  script(src="js/app.js")
+  script(src="/socket.io/socket.io.js")
+  script.
+    'use strict';
+    var socket = io(),
+        messageForm = one('#message-form'),
+        main = one('main'),
+        lastMessage;
+    messageForm.onsubmit = function(e) {
+      e.preventDefault();
+      lastMessage = escapeHtml(one('#message-input').value);
+      socket.emit('chat message', lastMessage);
+      messageForm.reset();
+    };

@@ -1,0 +1,11 @@
+
+nav(class="nav")
+
+  header(class="mast")
+    h1 deathmat.ch
+    h5 Start a fight.
+
+  if user
+    div(id="logoutform", class="logout-container")
+      span(class="username", id="account-username")= user.displayName
+      a(class="logout-submit", href="/logout") Log out
