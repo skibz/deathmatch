@@ -1,8 +1,8 @@
 
 language: node_js
-sudo: required
+# sudo: required
 node_js:
   - '0.12'
-env:
-  - NODE_PORT=3000
-after_script: npm run coverage
+# env:
+  # - NODE_PORT=3000
+# after_script: npm run coverage
