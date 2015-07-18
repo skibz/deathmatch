@@ -1,7 +1,7 @@
 
 # deathmatch
 
-[![Build Status](https://travis-ci.org/io-digital/project-name.svg)](https://travis-ci.org/io-digital/project-name)
-[![Coverage Status](https://coveralls.io/repos/io-digital/project-name/badge.svg?branch=master)](https://coveralls.io/r/io-digital/project-name?branch=master)
+[![Build Status](https://travis-ci.org/skibz/deathmatch.svg)](https://travis-ci.org/skibz/deathmatch)
+[![Coverage Status](https://coveralls.io/repos/skibz/deathmatch/badge.svg?branch=master)](https://coveralls.io/r/skibz/deathmatch?branch=master)
 
 server and client code for [deathmat.ch](http://deathmat.ch)
