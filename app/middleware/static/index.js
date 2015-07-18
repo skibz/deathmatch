@@ -1,5 +1,4 @@
 
-var path = require('path');
 var favicon = require('serve-favicon');
 
 var FAVICON = process.env.FAVICON;
