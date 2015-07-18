@@ -7,7 +7,7 @@
   "scripts": {
     "test": "istanbul test _mocha -- -R spec",
     "start": "./configure && node index.js",
-    "nodemon": "nodemon index.js",
+    "nodemon": "./configure-dev && nodemon index.js",
     "coverage": "istanbul cover _mocha --report lcovonly -- test -R spec && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage"
   },
   "author": "Ant Cosentino <ant@io.co.za>",

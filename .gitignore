@@ -10,3 +10,4 @@ coverage/
 # environment variable configuration
 *.env
 configure
+configure-dev
