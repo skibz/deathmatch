@@ -18,6 +18,8 @@ module.exports = function() {
   this.use(passport.session());
 
   passport.serializeUser(function(user, done) {
+    // do we upsert here?
+    //
     // console.log('passport serialise', user);
     done(null, user);
   });
@@ -32,7 +34,8 @@ module.exports = function() {
     returnURL: STEAM_REDIRECT_URI,
     realm: SERVER_SOCKET
   }, function(id, profile, done) {
-    // this is where we'll upsert a user into our records
+    // or here?
+    //
     // console.log(
     //   'id', id,
     //   'profile', profile
