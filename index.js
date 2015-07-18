@@ -6,11 +6,15 @@ var express = require('express');
 var path = require('path');
 var app = express();
 
+var PORT = process.env.PORT;
+var VIEWS = process.env.VIEWS;
+var SERVER_SOCKET = process.env.SERVER_SOCKET;
+
 // set the port
-app.set('port', process.env.PORT || 3000);
+app.set('port', PORT);
 
 // set up the view engine
-app.set('views', path.join(__dirname, 'app/views'));
+app.set('views', VIEWS);
 app.set('view engine', 'jade');
 
 // make static accessible for various middlewares
@@ -57,6 +61,10 @@ io.on('connection', function(socket) {
 // bind the server socket
 process.nextTick(function() {
   server.listen(app.get('port'), function() {
-    console.log('server listening at port', app.get('port'));
+    console.log(
+      'server listening on',
+      SERVER_SOCKET,
+      app.get('port')
+    );
   });
 });
