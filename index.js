@@ -26,36 +26,13 @@ require('./app/middleware/auth').call(app);
 
 // initialise the websocket server
 var server = http.createServer(app);
-var io = require('socket.io')(server);
 
 // bind the app routes
 require('./app/routes/auth').call(app);
 require('./app/routes/index').call(app);
 
 // bind the websocket events
-io.on('connection', function(socket) {
-
-  console.log('a user connected');
-
-  socket.on('chat message', function(message) {
-    console.log('message received:', message);
-    socket.emit('chat message acknowledged');
-  }).on('error', function(err) {
-    console.error('socket error', err);
-  }).on('disconnect', function() {
-    console.log('a user disconnected');
-  }).on('reconnect', function(attempts) {
-    console.log('a user reconnected after', attempts, 'attempts');
-  }).on('reconnect_attempt', function() {
-    console.log('a user is attempting to reconnect');
-  }).on('reconnecting', function(attempt) {
-    console.log('a user has tried', attempt, 'times to reconnect');
-  }).on('reconnect_error', function(err) {
-    console.error('reconnection error', err);
-  }).on('reconnect_failed', function() {
-    console.log('reconnection failed');
-  });
-});
+require('./app/ws').call(server);
 
 // bind the server socket
 process.nextTick(function() {
