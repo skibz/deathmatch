@@ -6,6 +6,23 @@ nav(class="nav")
     h5 Start a fight.
 
   if user
+
     div(id="logoutform", class="logout-container")
+
       span(class="username", id="account-username")= user.displayName
       a(class="logout-submit", href="/logout") Log out
+
+      input(
+        type="hidden",
+        id="user",
+        data-displayname=user.displayName,
+        data-steam=user._json.steamid,
+        data-twitch=user.id && user.email ? user.id : '',
+        data-deathmatch=user.deathmatchid
+      )
+
+    img(
+      class="user-avatar",
+      src=user._json.logo || user.photos[1].value,
+      alt=user.displayName
+    )
