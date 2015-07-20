@@ -1,6 +1,7 @@
 
 - [ ] security audit
   + [ ] ensure no one use can use xss to grab `data-deathmatch` and spoof as an admin
+  + [ ] change the clientside chat to only activate once a client has send `identify` and the websocket server has acknowledged the event.
 
 - [ ] set up webhooks on droplet for deploys
   + [ ] move to develop branch and deploy on pushes to master
