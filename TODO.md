@@ -1,4 +1,7 @@
 
+- [ ] security audit
+  + [ ] ensure no one use can use xss to grab `data-deathmatch` and spoof as an admin
+
 - [ ] set up webhooks on droplet for deploys
   + [ ] move to develop branch and deploy on pushes to master
 
