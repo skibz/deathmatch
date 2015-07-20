@@ -60,28 +60,18 @@ module.exports = function() {
 
   io.on('connection', function(socket) {
 
-    socket.on('identify', function(steam, twitch, displayName, deathmatch) {
+    socket.on('identify', function(steam, twitch, displayname, deathmatch) {
       clients[socket.id] = {
         socket: socket.id,
-        displayName: displayName,
+        displayname: displayname,
         twitch: twitch,
         steam: steam
       };
-
       auth[socket.id] = deathmatch;
-
       socket.emit('client list', Object.keys(clients).map(
         function(key) { return clients[key]; }
       ));
-
-      var joined = {
-        joined: true,
-        steam: clients[socket.id].steam,
-        twitch: clients[socket.id].twitch,
-        displayName: clients[socket.id].displayName,
-        socket: clients[socket.id].socket
-      };
-      socket.broadcast.emit('someone joined', joined);
+      socket.broadcast.emit('someone joined', clients[socket.id]);
     });
     socket.on('chat message', function(message) {
       socket.broadcast.emit('chat message', message);
@@ -128,24 +118,15 @@ module.exports = function() {
         io.emit('lobby changed', lobby);
       }
     });
-    socket.on('public last game', function() {});
+    socket.on('public last game', function() {}); // probably won't be needing this
     socket.on('admin add players', function(players) {});
     socket.on('admin remove players', function(players) {});
     socket.on('admin change map', function(map) {});
     socket.on('admin change server', function(server) {});
     socket.on('admin change format', function(format) {});
-    socket.on('error', function(err) {
-      console.error('socket error', err);
-    });
+    socket.on('error', console.error.bind(console));
     socket.on('disconnect', function() {
-      var parted = {
-        parted: true,
-        steam: clients[socket.id].steam,
-        twitch: clients[socket.id].twitch,
-        displayName: clients[socket.id].displayName,
-        socket: clients[socket.id].socket
-      };
-      io.emit('someone left', parted);
+      io.emit('someone left', clients[socket.id]);
       delete clients[socket.id];
       delete auth[socket.id];
     });
