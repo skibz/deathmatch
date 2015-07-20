@@ -1,35 +1,7 @@
 
 'use strict';
 
-function get(property, value) {
-  for (var i in this) {
-    if (this[i][property] === value) {
-      return this[i];
-    }
-  }
-}
-
-function pop(property, value) {
-  for (var i in this) {
-    if (this[i][property] === value) {
-      return this.splice(i, 1);
-    }
-  }
-}
-
-function add(element) {
-  this.push(element);
-}
-
-var io;
-
-var clients = {
-  // socket: {}
-};
-
-var auth = {
-  // socket: deathmatch
-};
+var io, clients = {}, auth = {}, challenges = [];
 
 var resetLobby = {
   id: null, // Date.now
@@ -48,10 +20,6 @@ var lobby = {
   server: null,
   closing: false
 };
-
-var challenges = [
-  // duelling players
-];
 
 // `this` should be bound to http server from /index.js
 module.exports = function() {
