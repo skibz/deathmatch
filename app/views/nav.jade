@@ -9,20 +9,21 @@ nav(class="nav")
 
     div(id="logoutform", class="logout-container")
 
-      span(class="username", id="account-username")= user.displayName
+      span(class="username", id="account-username")= user.display_name
       a(class="logout-submit", href="/logout") Log out
 
       input(
         type="hidden",
         id="user",
-        data-displayname=user.displayName,
-        data-steam=user._json.steamid,
-        data-twitch=user.id && user.email ? user.id : '',
-        data-deathmatch=user.deathmatchid
+        data-displayname=user.display_name,
+        data-steam=user.steam_id,
+        data-twitch=user.twitch_id,
+        data-deathmatch=user.deathmatch_id,
+        data-nedb=user._id
       )
 
     img(
       class="user-avatar",
-      src=user._json.logo || user.photos[1].value,
-      alt=user.displayName
+      src=user.deathmatch_avatar || user.steam_avatar || user.twitch_avatar,
+      alt=user.display_name
     )
