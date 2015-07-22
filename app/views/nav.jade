@@ -23,7 +23,8 @@ nav(class="nav")
       )
 
     img(
+      id="edit-profile",
       class="user-avatar",
-      src=user.deathmatch_avatar || user.steam_avatar || user.twitch_avatar,
+      src=user.deathmatch_avatar || user.steam_avatar_medium || user.twitch_avatar,
       alt=user.display_name
     )
