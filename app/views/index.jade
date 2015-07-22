@@ -7,14 +7,33 @@ block content
 
   include ./nav.jade
 
-  main(class="main messages")
+  div(id="chat-container")
 
-  form(id="message-form", class="chat-input")
-    textarea(id="message-input", class="message-input", rows="5", placeholder="Say something...")
-    input(class="chat-input-submit", type="submit", value="Send")
+    select(id="client-list" multiple)
 
-  select(id="client-list", class="nav nav-centred" multiple)
+    main(class="main messages")
+
+    form(id="message-form", class="chat-input")
+      textarea(id="message-input", class="message-input", rows="5", placeholder="Say something...")
+      input(class="chat-input-submit", type="submit", value="Send")
+
+  div(id="profile-container")
+
+    form(id="edit-email-addr")
+      input(id="email-addr", type="email", placeholder="Email", value=user.email)
+      input(type="submit", value="Save")
+
+    form(id="edit-dm-displayname")
+      input(id="dm-displayname", type="text", value=user.display_name, placeholder="Display name")
+      input(type="submit", value="Save")
+
+    form(id="edit-desktop-notifications")
+      input(type="submit", value="Enable desktop notifications")
+
+    form(id="delete-my-account")
+      input(type="submit", value="Delete my account")
 
 block scripts
   script(src="/socket.io/socket.io.js")
+  script(src="js/sexhr.js")
   script(src="js/app.js")
