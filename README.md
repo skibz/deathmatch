@@ -8,7 +8,8 @@ server and client code for [deathmat.ch](http://deathmat.ch/)
 
 ##### configuration
 
-+ `VIEWS`: jade template directory
++ `VIEW_ENGINE`: jade, ejs, etc...
++ `VIEWS`: template directory
 + `STATIC`: public document root
 + `FAVICON`: absolute path to `favicon.ico`
 + `SESSION_SECRET`: session store key
