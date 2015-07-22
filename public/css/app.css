@@ -1,4 +1,8 @@
 
+.hidden {
+  display: none !important;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -25,6 +29,7 @@ html, body,
 .nav, .mast,
 .login-container,
 .logout-container,
+.profile-container,
 .register-container,
 .main, .messages,
 .chat-input, .steam-anchor,
@@ -34,7 +39,7 @@ html, body,
 }
 
 .nav {
-  margin: auto 0 0;
+  margin: 50px 0 0;
   flex-direction: row;
 }
 
@@ -90,11 +95,6 @@ html, body,
   margin: auto 0 auto auto;
 }
 
-.edit-profile-container {
-  /* hidden by default */
-  display: none;
-}
-
 .main {
   margin: auto 0 0;
   display: flex;
@@ -102,6 +102,10 @@ html, body,
   height: 60%;
   box-shadow: inset 0 0 1px #000;
   padding: 0.35em;
+}
+
+.profile-container {
+  margin: 50px 0 0;
 }
 
 .chat-input,
