@@ -46,10 +46,10 @@ module.exports = function() {
     });
     socket.on('public add player', function(player) {
       // block the hax
-      if (player.id !== socket.id) return;
+      if (player.socket !== socket.id) return;
 
       // player isn't added and lobby has space
-      if (lobby.players.indexOf(player.id) === -1 &&
+      if (lobby.players.indexOf(player.socket) === -1 &&
           lobby.players.length < lobby.format * 2) {
 
         // if player is taking the final spot
@@ -68,9 +68,9 @@ module.exports = function() {
     });
     socket.on('public remove player', function(player) {
       // block the hax
-      if (player.id !== socket.id) return;
+      if (player.socket !== socket.id) return;
       // player is added
-      if (lobby.players.indexOf(player.id) > -1) {
+      if (lobby.players.indexOf(player.socket) > -1) {
         if (lobby.players.length === lobby.format * 2) {
           // check for lobby.closing === false on the frontend
           // and clear any timeouts for posting desktop notifications
@@ -79,7 +79,7 @@ module.exports = function() {
           lobby.closing = false;
         }
         for (var p in lobby.players) {
-          if (lobby.players[p].id === player.id) {
+          if (lobby.players[p].socket === player.socket) {
             lobby.players.splice(p, 1);
           }
         }
