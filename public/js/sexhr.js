@@ -22,7 +22,7 @@
           return headers[headerParts[0]] = headerParts[1];
         });
         return headers;
-      })()
+      }).call(this)
     };
     if (options.json || ((response.headers['Content-type'] != null) && response.headers['Content-type'] === 'application/json')) {
       response.json = JSON.parse(response.text);
@@ -68,7 +68,7 @@
       };
       if (typeof opts.done === 'function') {
         this.xhr.addEventListener('load', (function(e) {
-          return onload.call(this.xhr, opts, e);
+          return onload.call(e.target, opts, e);
         }), false);
         this.xhr.addEventListener('timeout', (function(e) {
           return opts.done({
