@@ -10,3 +10,6 @@ coverage/
 # production and devleopment bootstrappers
 start
 nodemon
+
+# nedb collections
+data/
