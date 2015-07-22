@@ -2,7 +2,7 @@
 'use strict';
 
 /**
- *
+ * filters any dangerous characters
  * @param  {String} string
  * @return {String}        html-entitied string
  */
@@ -167,8 +167,6 @@ function messageFormSubmit(e) {
 var socket = io();
 var user = one('#user');
 
-one('#message-form').onsubmit = messageFormSubmit;
-
 socket.on('client list', clientList);
 socket.on('chat message', appendMessage);
 socket.on('someone joined', function(who) {
@@ -185,3 +183,87 @@ socket.emit(
   user.getAttribute('data-displayname'),
   user.getAttribute('data-deathmatch')
 );
+
+one('#message-form').onsubmit = messageFormSubmit;
+
+one('#edit-desktop-notifications').onsubmit = function(e) {
+  e.preventDefault();
+  Notification.requestPermission(function(permission) {
+    if (permission === 'granted') {
+      // test out notification?
+      // how do we persist this setting?
+    }
+  });
+};
+
+one('#edit-dm-account').onsubmit = function(e) {
+  e.preventDefault();
+  new sexhr().req({
+    url: '/user/' + user.getAttribute('data-nedb'),
+    method: 'PUT',
+    json: true,
+    body: JSON.stringify({
+      email: one('#dm-email').value,
+      displayname: one('#dm-displayname').value,
+      deathmatch: user.getAttribute('data-deathmatch')
+    }),
+    timeout: 30000,
+    loadstart: function() {
+      console.log('loadstart', this);
+    },
+    progress: function() {
+      console.log('progress', this);
+      // nanobar.go(this.percent);
+    },
+    loadend: function() {
+      console.log('loadend', this);
+    },
+    done: function(err, res) {
+      if (err) {
+        // show a flash message?
+      } else {
+        // show a flash message?
+      }
+    }
+  });
+};
+
+one('#edit-dm-account').onsubmit = function(e) {
+  e.preventDefault();
+  new sexhr().req({
+    url: '/user/' + user.getAttribute('data-nedb'),
+    method: 'DELETE',
+    json: true,
+    body: JSON.stringify({
+      deathmatch: user.getAttribute('data-deathmatch')
+    }),
+    timeout: 30000,
+    loadstart: function() {
+      console.log('loadstart', this);
+    },
+    progress: function() {
+      console.log('progress', this);
+      // nanobar.go(this.percent);
+    },
+    loadend: function() {
+      console.log('loadend', this);
+    },
+    done: function(err, res) {
+      if (err) {
+        // wow, i'm sooooo sorry we couldn't kick you out
+      } else {
+        window.location.assign('/logout');
+      }
+    }
+  });
+};
+
+one('#edit-profile').onclick = function(e) {
+  one('#chat-container').style.display = 'none';
+  one('#profile-container').style.display = '';
+};
+
+one('#back-to-chat').onclick = function(e) {
+  one('#chat-container').style.display = '';
+  one('#profile-container').style.display = 'none';
+};
