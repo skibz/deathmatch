@@ -74,6 +74,7 @@ html, body,
 .username {
   text-align: right;
   line-height: 1.5em;
+  cursor: pointer;
 }
 
 .user-avatar {
@@ -82,6 +83,7 @@ html, body,
   max-height: 42px;
   border-radius: 6px;
   border: 1px solid;
+  cursor: pointer;
 }
 
 .logout-submit {
