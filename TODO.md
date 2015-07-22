@@ -1,6 +1,5 @@
 
-- [ ] nanobar
-  + [ ] configure to use xmlhttprequest progress
+- [x] clientside progress bar
 
 - [ ] chat features
   + [ ] nickname tab-completion
@@ -33,13 +32,6 @@
   + [ ] challenge another team
   + [ ] results of matches
 
-- [ ] platform statistics
-  + [ ] total lobbies
-  + [ ] total players
-  + [ ] total duels
-  + [ ] average duels per day
-  + [ ] average lobbies per day
-
 - [ ] process management
   + [ ] create user and group
     * [ ] user: `deathmatch`
@@ -61,7 +53,7 @@
 - [ ] set up webhooks on droplet for deploys
   + [ ] move to develop branch and deploy on pushes to master
 
-- [ ] get a database
+- [x] get a database
   + [x] document-oriented or sql?
     * [x] gonna try out `louischatriot/nedb`.
 
@@ -75,6 +67,12 @@
   + [ ] map listings
   + [ ] server listings
   + [ ] log file inspection and download (gzipped)
+  + [ ] platform statistics
+    * [ ] total lobbies
+    * [ ] total players
+    * [ ] total duels
+    * [ ] average duels per day
+    * [ ] average lobbies per day
 
 - [ ] admin's player/server/etc lists need to update in real time
   + [ ] use websocket events for state management
@@ -111,5 +109,6 @@
     + [x] not going to bother with traditional signup flow (ie. email)
       * [x] if i do, it's going to be invitation based
 
-- [ ] authenticated users need to be stored in a database
-  + [ ] design a user schema normalised for differences between data available from steam and twitch profiles
+- [x] authenticated users need to be stored in a database
+  + [x] design a user schema normalised for differences between data available from steam and twitch profiles
+    * [ ] figure out how to allow a user to log in with a separate account without creating a new user record - until then, we'll only use steam auth strategy
