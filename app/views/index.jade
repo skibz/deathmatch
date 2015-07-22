@@ -7,25 +7,20 @@ block content
 
   include ./nav.jade
 
-  div(id="chat-container", class="main-chat-container")
+  select(id="client-list" multiple)
 
-    select(id="client-list" multiple)
+  main(class="main messages")
 
-    main(class="main messages")
+  form(id="message-form", class="chat-input")
+    textarea(id="message-input", class="message-input", rows="5", placeholder="Say something...")
+    input(class="chat-input-submit", type="submit", value="Send")
 
-    form(id="message-form", class="chat-input")
-      textarea(id="message-input", class="message-input", rows="5", placeholder="Say something...")
-      input(class="chat-input-submit", type="submit", value="Send")
-
-  div(id="profile-container", class="edit-profile-container")
+  div(id="profile-container", class="hidden profile-container")
 
     button(id="back-to-chat") Back
 
-    form(id="edit-email-addr")
-      input(id="email-addr", type="email", placeholder="Email", value=user.email)
-      input(type="submit", value="Save")
-
-    form(id="edit-dm-displayname")
+    form(id="edit-dm-account")
+      input(id="dm-email", type="email", placeholder="Email", value=user.email)
       input(id="dm-displayname", type="text", value=user.display_name, placeholder="Display name")
       input(type="submit", value="Save")
 
