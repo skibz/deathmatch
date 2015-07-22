@@ -7,7 +7,7 @@ block content
 
   include ./nav.jade
 
-  div(id="chat-container")
+  div(id="chat-container", class="main-chat-container")
 
     select(id="client-list" multiple)
 
@@ -17,7 +17,9 @@ block content
       textarea(id="message-input", class="message-input", rows="5", placeholder="Say something...")
       input(class="chat-input-submit", type="submit", value="Send")
 
-  div(id="profile-container")
+  div(id="profile-container", class="edit-profile-container")
+
+    button(id="back-to-chat") Back
 
     form(id="edit-email-addr")
       input(id="email-addr", type="email", placeholder="Email", value=user.email)
