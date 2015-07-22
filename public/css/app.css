@@ -88,6 +88,11 @@ html, body,
   margin: auto 0 auto auto;
 }
 
+.edit-profile-container {
+  /* hidden by default */
+  display: none;
+}
+
 .main {
   margin: auto 0 0;
   display: flex;
