@@ -198,7 +198,7 @@ one('#edit-desktop-notifications').onsubmit = function(e) {
     //   notification.onshow = function(e) {};
     //   notification.onclose = function(e) {};
     //   notification.onerror = function(e) {};
-    // }
+    }
   });
 };
 
