@@ -190,9 +190,15 @@ one('#edit-desktop-notifications').onsubmit = function(e) {
   e.preventDefault();
   Notification.requestPermission(function(permission) {
     if (permission === 'granted') {
-      // test out notification?
-      // how do we persist this setting?
-    }
+    //   var notification = new Notification('Just testing', {
+    //     body: ''
+    //   });
+
+    //   notification.onclick = function(e) {};
+    //   notification.onshow = function(e) {};
+    //   notification.onclose = function(e) {};
+    //   notification.onerror = function(e) {};
+    // }
   });
 };
 
@@ -202,68 +208,38 @@ one('#edit-dm-account').onsubmit = function(e) {
     url: '/user/' + user.getAttribute('data-nedb'),
     method: 'PUT',
     json: true,
+    headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({
       email: one('#dm-email').value,
       displayname: one('#dm-displayname').value,
       deathmatch: user.getAttribute('data-deathmatch')
     }),
-    timeout: 30000,
-    loadstart: function() {
-      console.log('loadstart', this);
-    },
-    progress: function() {
-      console.log('progress', this);
-      // nanobar.go(this.percent);
-    },
-    loadend: function() {
-      console.log('loadend', this);
-    },
-    done: function(err, res) {
-      if (err) {
-        // show a flash message?
-      } else {
-        // show a flash message?
-      }
-    }
+    done: function(err, res) { if (err) throw err; }
   });
 };
 
-one('#edit-dm-account').onsubmit = function(e) {
+one('#delete-my-account').onsubmit = function(e) {
   e.preventDefault();
   new sexhr().req({
     url: '/user/' + user.getAttribute('data-nedb'),
     method: 'DELETE',
     json: true,
-    body: JSON.stringify({
-      deathmatch: user.getAttribute('data-deathmatch')
-    }),
-    timeout: 30000,
-    loadstart: function() {
-      console.log('loadstart', this);
-    },
-    progress: function() {
-      console.log('progress', this);
-      // nanobar.go(this.percent);
-    },
-    loadend: function() {
-      console.log('loadend', this);
-    },
-    done: function(err, res) {
-      if (err) {
-        // wow, i'm sooooo sorry we couldn't kick you out
-      } else {
-        window.location.assign('/logout');
-      }
-    }
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({deathmatch: user.getAttribute('data-deathmatch')}),
+    done: location.assign.bind(location, '/logout')
   });
 };
 
 one('#edit-profile').onclick = function(e) {
-  one('#chat-container').style.display = 'none';
-  one('#profile-container').style.display = '';
+  one('#client-list').style.display = 'none';
+  one('main').style.display = 'none';
+  one('#message-form').style.display = 'none';
+  one('#profile-container').classList.remove('hidden');
 };
 
 one('#back-to-chat').onclick = function(e) {
-  one('#chat-container').style.display = '';
-  one('#profile-container').style.display = 'none';
+  one('#profile-container').classList.add('hidden');
+  one('#client-list').style.display = '';
+  one('main').style.display = '';
+  one('#message-form').style.display = '';
 };
