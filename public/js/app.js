@@ -202,7 +202,7 @@ one('#edit-desktop-notifications').onsubmit = function(e) {
   });
 };
 
-one('#edit-dm-account').onsubmit = function(e) {
+one('#edit-my-account').onsubmit = function(e) {
   e.preventDefault();
   new sexhr().req({
     url: '/user/' + user.getAttribute('data-nedb'),
