@@ -33,6 +33,15 @@ describe('lobby class', function() {
       expect(lobby._finalising).to.equal(false);
       expect(lobby._finaliser).to.be.null;
       expect(lobby._createdAt).to.be.greaterThan(0);
+
+      describe('defauls', function() {
+        var lobby = Lobby.create({});
+        it('should initialise with default instance properties if no options are given', function() {
+          expect(lobby._players).to.deep.equal({});
+          expect(lobby._map).to.equal('cp_badlands');
+          expect(lobby._format).to.equal(6);
+        });
+      });
     });
 
     it('should have instance functions', function() {
@@ -212,6 +221,11 @@ describe('lobby class', function() {
 });
 
 describe('prefixer', function() {
+
+  it('should return a blank object if no options are passed', function() {
+    var prefixed = prefixer();
+    expect(prefixed).to.deep.equal({});
+  });
 
   it('should return an object with keys prefixed by an underscore containing value, writable, configurable and enumerable properties', function() {
     var prefixed = prefixer({test: 'a', test2: 'b'});
