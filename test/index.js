@@ -6,6 +6,7 @@ chai.use(require('sinon-chai'));
 var expect = chai.expect;
 
 var Lobby = require('../app/pickups/lobby');
+var prefixer = require('../app/etc/prefixer');
 
 describe('lobby class', function() {
 
@@ -206,6 +207,25 @@ describe('lobby class', function() {
           expect(lobby._finaliser).to.not.equal(null);
         });
       });
+    });
+  });
+});
+
+describe('prefixer', function() {
+
+  it('should return an object with keys prefixed by an underscore containing value, writable, configurable and enumerable properties', function() {
+    var prefixed = prefixer({test: 'a', test2: 'b'});
+    expect(prefixed._test).to.deep.equal({
+      value: 'a',
+      writable: true,
+      configurable: true,
+      enumerable: true
+    });
+    expect(prefixed._test2).to.deep.equal({
+      value: 'b',
+      writable: true,
+      configurable: true,
+      enumerable: true
     });
   });
 });
