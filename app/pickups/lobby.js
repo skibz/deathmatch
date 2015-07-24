@@ -39,10 +39,45 @@ module.exports = {
       ).length === this._format * 2;
     }
   },
-  create: function(options, done) {
+  create: function(options) {
 
-    var newLobby;
     var properties = prefixer(options);
+
+    if (!('_players' in properties)) {
+      properties._players = {
+        value: {},
+        writable: true,
+        enumerable: true,
+        configurable: true
+      };
+    }
+
+    if (!('_map' in properties)) {
+      properties._map = {
+        value: 'cp_badlands',
+        writable: true,
+        enumerable: true,
+        configurable: true
+      };
+    }
+
+    if (!('_format' in properties)) {
+      properties._format = {
+        value: 6,
+        writable: true,
+        enumerable: true,
+        configurable: true
+      };
+    }
+
+    if (!('_timeout' in properties)) {
+      properties._timeout = {
+        value: 60000,
+        writable: true,
+        enumerable: true,
+        configurable: true
+      };
+    }
 
     properties._createdAt = {
       value: +Date.now(),
@@ -65,22 +100,9 @@ module.exports = {
       configurable: true
     };
 
-    if (!('_timeout' in properties)) {
-      properties._timeout = {
-        value: 60000,
-        writable: true,
-        enumerable: true,
-        configurable: true
-      };
-    }
-
-    newLobby = Object.create(
+    return Object.create(
       module.exports.prototype,
       properties
     );
-
-    return typeof done === 'function' ? setImmediate(
-      done.bind(this, newLobby)
-    ) : newLobby;
   }
 };
