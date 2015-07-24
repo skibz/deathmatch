@@ -85,6 +85,7 @@
   + [ ] !status
   + [ ] !top
   + [ ] !server
+  + [ ] !rcon
 
 - [ ] public command: duel challenge (mge, bball, etc)
   + [ ] rules of challenging?
