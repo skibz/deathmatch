@@ -1,15 +1,20 @@
 
 module.exports = function(options) {
-  var properties = {};
-  var keys = Object.keys(options), key, prefixed;
+  var properties, key;
 
-  for (key in keys) {
-    prefixed = '_' + keys[key];
-    properties[prefixed] = {};
-    properties[prefixed].value = options[keys[key]];
-    properties[prefixed].writable = true;
-    properties[prefixed].enumerable = true;
-    properties[prefixed].configurable = true;
+  if (!(options && Object.keys(options).length)) {
+    return {};
+  }
+
+  properties = {};
+
+  for (key in options) {
+    properties['_' + key] = {
+      value: options[key],
+      writable: true,
+      enumerable: true,
+      configurable: true
+    };
   }
 
   return properties;
