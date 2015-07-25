@@ -8,9 +8,7 @@ module.exports = {
     add: function(player) {
       if (this.isFull()) return;
       this._players[player] = player;
-      this._finalising = !this._finalising && this.isFull() ? true : this._finalising;
-      this._finaliser = this._finalising && !this._finaliser ?
-        setTimeout(this._afterTimeout, this._timeout) : null;
+      this.tryBeginFinalising();
     },
     rem: function(player) {
       delete this._players[player];
@@ -34,75 +32,55 @@ module.exports = {
       ) : Object.keys(this._players);
     },
     isFull: function() {
-      return Object.keys(
-        this._players
-      ).length === this._format * 2;
+      return Object.keys(this._players).length === this._format * 2;
+    },
+    tryBeginFinalising: function() {
+      this._finalising = !this._finalising && this.isFull() ? true : this._finalising;
+      this._finaliser = this._finalising && !this._finaliser ? setTimeout(
+        this.tryFinishFinalising.bind(
+          this, this._postponed, this._starting
+        ), this._timeout
+      ) : null;
+    },
+    tryFinishFinalising: function(definalised, finalised) {
+      if (!this.isFull()) {
+        this._finalising = false;
+        this._finaliser = null;
+        return definalised();
+      }
+      return finalised();
     }
   },
   create: function(options) {
 
-    var properties = prefixer(options);
+    options = options || {};
 
-    if (!('_players' in properties)) {
-      properties._players = {
-        value: {},
-        writable: true,
-        enumerable: true,
-        configurable: true
-      };
+    if (!('timeout' in options)) {
+      options.timeout = 60000;
+    }
+    if (!('map' in options)) {
+      options.map = 'cp_badlands';
+    }
+    if (!('format' in options)) {
+      options.format = 6;
+    }
+    if (!('players' in options)) {
+      options.players = {};
+    }
+    if (!('starting' in options)) {
+      options.starting = function() {};
+    }
+    if (!('postponed' in options)) {
+      options.postponed = function() {};
     }
 
-    if (!('_map' in properties)) {
-      properties._map = {
-        value: 'cp_badlands',
-        writable: true,
-        enumerable: true,
-        configurable: true
-      };
-    }
-
-    if (!('_format' in properties)) {
-      properties._format = {
-        value: 6,
-        writable: true,
-        enumerable: true,
-        configurable: true
-      };
-    }
-
-    if (!('_timeout' in properties)) {
-      properties._timeout = {
-        value: 60000,
-        writable: true,
-        enumerable: true,
-        configurable: true
-      };
-    }
-
-    properties._createdAt = {
-      value: +Date.now(),
-      writable: false,
-      enumerable: true,
-      configurable: true
-    };
-
-    properties._finalising = {
-      value: false,
-      writable: true,
-      enumerable: true,
-      configurable: true
-    };
-
-    properties._finaliser = {
-      value: null,
-      writable: true,
-      enumerable: true,
-      configurable: true
-    };
+    options.createdAt = +Date.now();
+    options.finalising = false;
+    options.finaliser = null;
 
     return Object.create(
       module.exports.prototype,
-      properties
+      prefixer(options)
     );
   }
 };
