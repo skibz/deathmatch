@@ -163,8 +163,7 @@ describe('lobby class', function() {
           var lobby = Lobby.create({
             format: 1,
             timeout: 25,
-            starting: done,
-            postponed: done
+            starting: done
           });
           lobby.add('1');
           expect(lobby._finaliser).to.equal(null);
@@ -177,7 +176,6 @@ describe('lobby class', function() {
           var lobby = Lobby.create({
             format: 1,
             timeout: 25,
-            starting: done,
             postponed: done
           });
           lobby.add('1');
