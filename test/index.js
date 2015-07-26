@@ -30,8 +30,8 @@ describe('lobby class', function() {
       expect(lobby._map).to.equal('abc');
       expect(lobby._format).to.equal(2);
       expect(lobby._timeout).to.be.greaterThan(0);
-      expect(lobby._finalising).to.equal(false);
-      expect(lobby._finaliser).to.be.null;
+      expect(lobby._starting).to.equal(false);
+      expect(lobby._starter).to.be.null;
       expect(lobby._createdAt).to.be.greaterThan(0);
 
       describe('defaults', function() {
@@ -59,7 +59,7 @@ describe('lobby class', function() {
       expect(lobby.isFull).to.be.an.instanceof(Function);
     });
 
-    describe('properties', function() {
+    describe('properties and functions', function() {
       describe('_players', function() {
         var lobby = Lobby.create();
         it('should be empty after initialisation', function() {
@@ -116,59 +116,59 @@ describe('lobby class', function() {
           expect(lobby._timeout).to.equal(100);
         });
       });
-      describe('_finalising', function() {
+      describe('_starting', function() {
         it('should be false until total players is equal to double the value of _format', function() {
           var lobby = Lobby.create({format: 2});
           lobby.add('1');
-          expect(lobby._finalising).to.equal(false);
+          expect(lobby._starting).to.equal(false);
           lobby.add('2');
-          expect(lobby._finalising).to.equal(false);
+          expect(lobby._starting).to.equal(false);
           lobby.add('3');
-          expect(lobby._finalising).to.equal(false);
+          expect(lobby._starting).to.equal(false);
           lobby.add('4');
-          expect(lobby._finalising).to.equal(true);
+          expect(lobby._starting).to.equal(true);
         });
         it('should remain true if total players becomes less than double the value of _format after becoming double the value of _format', function() {
           var lobby = Lobby.create({format: 2});
           lobby.add('1');
-          expect(lobby._finalising).to.equal(false);
+          expect(lobby._starting).to.equal(false);
           lobby.add('2');
-          expect(lobby._finalising).to.equal(false);
+          expect(lobby._starting).to.equal(false);
           lobby.add('3');
-          expect(lobby._finalising).to.equal(false);
+          expect(lobby._starting).to.equal(false);
           lobby.add('4');
-          expect(lobby._finalising).to.equal(true);
+          expect(lobby._starting).to.equal(true);
           lobby.rem('4');
           lobby.rem('2');
           lobby.add('a');
-          expect(lobby._finalising).to.equal(true);
+          expect(lobby._starting).to.equal(true);
         });
       });
-      describe('_finaliser', function() {
+      describe('_starter', function() {
         it('should be null until total players is equal to double the value of _format', function() {
           var lobby = Lobby.create({format: 2});
-          expect(lobby._finaliser).to.equal(null);
+          expect(lobby._starter).to.equal(null);
           lobby.add('1');
-          expect(lobby._finaliser).to.equal(null);
+          expect(lobby._starter).to.equal(null);
           lobby.add('2');
-          expect(lobby._finaliser).to.equal(null);
+          expect(lobby._starter).to.equal(null);
           lobby.add('3');
-          expect(lobby._finaliser).to.equal(null);
+          expect(lobby._starter).to.equal(null);
           lobby.add('4');
-          expect(lobby._finaliser).to.be.an.instanceof(Object);
+          expect(lobby._starter).to.be.an.instanceof(Object);
         });
       });
-      describe('_starting', function() {
+      describe('_started', function() {
         it('should be invoked after _timeout milliseconds once total players is equal to double the value of _format', function(done) {
           var lobby = Lobby.create({
             format: 1,
             timeout: 25,
-            starting: done
+            started: done
           });
           lobby.add('1');
-          expect(lobby._finaliser).to.equal(null);
+          expect(lobby._starter).to.equal(null);
           lobby.add('2');
-          expect(lobby._finaliser).to.not.equal(null);
+          expect(lobby._starter).to.not.equal(null);
         });
       });
       describe('_postponed', function() {
@@ -179,9 +179,9 @@ describe('lobby class', function() {
             postponed: done
           });
           lobby.add('1');
-          expect(lobby._finaliser).to.equal(null);
+          expect(lobby._starter).to.equal(null);
           lobby.add('2');
-          expect(lobby._finaliser).to.not.equal(null);
+          expect(lobby._starter).to.not.equal(null);
           lobby.rem('2');
         });
       });

@@ -8,7 +8,7 @@ module.exports = {
     add: function(player) {
       if (this.isFull()) return;
       this._players[player] = player;
-      this.tryBeginFinalising();
+      this.tryBeginStarting();
     },
     rem: function(player) {
       delete this._players[player];
@@ -34,21 +34,21 @@ module.exports = {
     isFull: function() {
       return Object.keys(this._players).length === this._format * 2;
     },
-    tryBeginFinalising: function() {
-      this._finalising = !this._finalising && this.isFull() ? true : this._finalising;
-      this._finaliser = this._finalising && !this._finaliser ? setTimeout(
-        this.tryFinishFinalising.bind(
-          this, this._postponed, this._starting
+    tryBeginStarting: function() {
+      this._starting = !this._starting && this.isFull() ? true : this._starting;
+      this._starter = this._starting && !this._starter ? setTimeout(
+        this.tryStart.bind(
+          this, this._postponed, this._started
         ), this._timeout
       ) : null;
     },
-    tryFinishFinalising: function(definalised, finalised) {
+    tryStart: function(postponed, started) {
       if (!this.isFull()) {
-        this._finalising = false;
-        this._finaliser = null;
-        return definalised();
+        this._starting = false;
+        this._starter = null;
+        return postponed();
       }
-      return finalised();
+      return started();
     }
   },
   create: function(options) {
@@ -67,16 +67,16 @@ module.exports = {
     if (!('players' in options)) {
       options.players = {};
     }
-    if (!('starting' in options)) {
-      options.starting = function() {};
+    if (!('started' in options)) {
+      options.started = function() {};
     }
     if (!('postponed' in options)) {
       options.postponed = function() {};
     }
 
     options.createdAt = +Date.now();
-    options.finalising = false;
-    options.finaliser = null;
+    options.starting = false;
+    options.starter = null;
 
     return Object.create(
       module.exports.prototype,
