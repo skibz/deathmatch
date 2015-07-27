@@ -5,6 +5,12 @@
   + [ ] nickname tab-completion
   + [ ] audio on mentions, direct messages and moderation events
   + [ ] audio on lobby status changes
+  + [ ] add rooms to websocket system
+    * [ ] allow for chat scoping between admins
+    * [ ] lobbyists
+    * [ ] duellers
+    * [ ] clans
+    * [ ] public
 
 - [ ] moderation
   + [ ] user chat muting

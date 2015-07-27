@@ -16,6 +16,9 @@ module.exports = {
     isAdded: function(player) {
       return player in this._players;
     },
+    // volunteer: function(player) {
+    //   TODO - volunteer as captain?
+    // },
     map: function() {
       return arguments.length ? (
         this._map = arguments[0]
@@ -67,11 +70,23 @@ module.exports = {
     if (!('players' in options)) {
       options.players = {};
     }
+    if (!('captains' in options)) {
+      options.captains = {};
+    }
     if (!('started' in options)) {
       options.started = function() {};
     }
     if (!('postponed' in options)) {
       options.postponed = function() {};
+    }
+
+    if ('createdAt' in options ||
+        'starting' in options ||
+        'starter' in options) {
+      throw new Error(
+        'The use of protected instance properties is forbidden: ' +
+        '`createdAt`, `starting`, `starter`.'
+      );
     }
 
     options.createdAt = +Date.now();

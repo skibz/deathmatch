@@ -20,6 +20,12 @@ describe('lobby class', function() {
 
   describe('lobby instance', function() {
 
+    it('should throw an error if protected properties are used at construction time', function() {
+      expect(Lobby.create.bind(Lobby, {createdAt: true})).to.throw();
+      expect(Lobby.create.bind(Lobby, {starting: true})).to.throw();
+      expect(Lobby.create.bind(Lobby, {starter: true})).to.throw();
+    });
+
     it('should have instance properties', function() {
       var lobby = Lobby.create({
         players: {},
@@ -27,6 +33,7 @@ describe('lobby class', function() {
         format: 2
       });
       expect(lobby._players).to.deep.equal({});
+      expect(lobby._captains).to.deep.equal({});
       expect(lobby._map).to.equal('abc');
       expect(lobby._format).to.equal(2);
       expect(lobby._timeout).to.be.greaterThan(0);
@@ -162,27 +169,34 @@ describe('lobby class', function() {
         it('should be invoked after _timeout milliseconds once total players is equal to double the value of _format', function(done) {
           var lobby = Lobby.create({
             format: 1,
-            timeout: 25,
-            started: done
+            timeout: 10,
+            started: function() {
+              expect(lobby._starter).to.not.equal(null);
+              return done();
+            }
           });
           lobby.add('1');
-          expect(lobby._starter).to.equal(null);
+          // expect(lobby._starter).to.equal(null);
           lobby.add('2');
-          expect(lobby._starter).to.not.equal(null);
+          // expect(lobby._starter).to.not.equal(null);
         });
       });
       describe('_postponed', function() {
         it('should be invoked after _timeout milliseconds once total players is equal to double the value of _format and subsequently becomes less than double the value of _format', function(done) {
           var lobby = Lobby.create({
             format: 1,
-            timeout: 25,
-            postponed: done
+            timeout: 10,
+            postponed: function() {
+              expect(lobby._starter).to.be.null;
+              return done();
+            }
           });
           lobby.add('1');
-          expect(lobby._starter).to.equal(null);
+          // expect(lobby._starter).to.equal(null);
           lobby.add('2');
-          expect(lobby._starter).to.not.equal(null);
+          // expect(lobby._starter).to.not.equal(null);
           lobby.rem('2');
+          // expect(lobby._starter).to.be.null;
         });
       });
     });
@@ -192,12 +206,12 @@ describe('lobby class', function() {
 describe('prefixer', function() {
 
   it('should return a blank object if no options are passed', function() {
-    var prefixed = prefixer();
-    expect(prefixed).to.deep.equal({});
+    expect(prefixer()).to.deep.equal({});
   });
 
   it('should return an object with keys prefixed by an underscore containing value, writable, configurable and enumerable properties', function() {
     var prefixed = prefixer({test: 'a', test2: 'b'});
+    expect(prefixed).to.have.keys(['_test', '_test2']);
     expect(prefixed._test).to.deep.equal({
       value: 'a',
       writable: true,

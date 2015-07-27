@@ -30,29 +30,32 @@ module.exports = {
   },
   create: function(options, done) {
 
-    var rcon;
-    var properties = prefixer(options);
+    // ought to change this class
+    // to accept a list of commands
+    // that are executed once the
+    // authenticated event is fired
 
-    // this could be the leakiest
-    // code i have ever written...
-    rcon = new SimpleRcon(
+    var properties = prefixer(options);
+    var rcon = new SimpleRcon(
       properties._host.value,
       properties._port.value,
       properties._rcon.value
-    ).on('error', function(err) {
+    );
+
+    // this could be the leakiest
+    // code i have ever written...
+    rcon.on('error', function(err) {
       console.error(new Date(), 'rcon error', err);
-    }).on('authenticated', function() {
+    }).once('authenticated', function() {
       properties._context = {
         value: rcon,
         writable: false,
         enumerable: true,
         configurable: true
       };
-      return setImmediate(
-        done.bind(this, Object.create(
-          module.exports.prototype,
-          properties
-        ))
+      return Object.create(
+        module.exports.prototype,
+        properties
       );
     });
   }
