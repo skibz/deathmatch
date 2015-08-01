@@ -259,7 +259,7 @@ describe('rcon class', function() {
         it('should append a string element to the _commands array', function() {
           var rcon = Rcon.create();
           expect(rcon._commands.length).to.equal(0);
-          expect(rcon.map('cp_badlands')).to.deep.equal(rcon);
+          rcon.map('cp_badlands');
           expect(rcon._commands.length).to.equal(1);
         });
       });
@@ -271,7 +271,7 @@ describe('rcon class', function() {
         it('should append a string element to the _commands array', function() {
           var rcon = Rcon.create();
           expect(rcon._commands.length).to.equal(0);
-          expect(rcon.map('cp_badlands')).to.deep.equal(rcon);
+          rcon.say('hello everyone');
           expect(rcon._commands.length).to.equal(1);
         });
       });
@@ -283,7 +283,7 @@ describe('rcon class', function() {
         it('should append a string element to the _commands array', function() {
           var rcon = Rcon.create();
           expect(rcon._commands.length).to.equal(0);
-          expect(rcon.map('cp_badlands')).to.deep.equal(rcon);
+          rcon.kick('zoidberg');
           expect(rcon._commands.length).to.equal(1);
         });
       });
@@ -295,7 +295,7 @@ describe('rcon class', function() {
         it('should append a string element to the _commands array', function() {
           var rcon = Rcon.create();
           expect(rcon._commands.length).to.equal(0);
-          expect(rcon.map('cp_badlands')).to.deep.equal(rcon);
+          rcon.ban('zoidberg');
           expect(rcon._commands.length).to.equal(1);
         });
       });
@@ -307,7 +307,7 @@ describe('rcon class', function() {
         it('should append a string element to the _commands array', function() {
           var rcon = Rcon.create();
           expect(rcon._commands.length).to.equal(0);
-          expect(rcon.map('cp_badlands')).to.deep.equal(rcon);
+          rcon.unban('zoidberg');
           expect(rcon._commands.length).to.equal(1);
         });
       });
@@ -315,16 +315,18 @@ describe('rcon class', function() {
 
     describe('go', function() {
       it('should throw if no host, port and/or password are given', function() {
-        var rcon = Rcon.create();
-        expect(rcon.map('123').go).to.throw(TypeError);
+        expect(Rcon.create().map('123').go).to.throw(TypeError);
+
+        expect(Rcon.create({host: 'localhost', port: 27000}).map('123').go).to.throw(TypeError);
+        expect(Rcon.create({port: 27000, rcon: 'abc123'}).map('123').go).to.throw(TypeError);
+        expect(Rcon.create({host: 'localhost', rcon: 'abc123'}).map('123').go).to.throw(TypeError);
+
+        expect(Rcon.create({host: 'localhost'}).map('123').go).to.throw(TypeError);
+        expect(Rcon.create({port: 27000}).map('123').go).to.throw(TypeError);
+        expect(Rcon.create({rcon: 'abc123'}).map('123').go).to.throw(TypeError);
       });
       it('should throw if simple-rcon emits an error', function() {
-        var rcon = Rcon.create({
-          host: 'localhost',
-          port: 27000,
-          rcon: 'abc123'
-        });
-        expect(rcon.go).to.throw(Error);
+        expect(Rcon.create({host: 'localhost', port: 27000, rcon: 'abc123'}).go).to.throw(Error);
       });
     });
   });
