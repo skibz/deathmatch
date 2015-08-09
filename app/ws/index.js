@@ -36,9 +36,12 @@ module.exports = function() {
         steam: steam
       };
       auth[socket.id] = deathmatch;
-      socket.emit('client list', Object.keys(clients).map(
-        function(key) { return clients[key]; }
-      ));
+      socket.emit(
+        'client list',
+        Object.keys(clients).map(function(key) {
+          return clients[key];
+        })
+      );
       socket.broadcast.emit('someone joined', clients[socket.id]);
     });
     socket.on('chat message', function(message) {
