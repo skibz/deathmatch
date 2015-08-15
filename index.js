@@ -37,7 +37,7 @@ require('./app/routes/user').call(app);
 require('./app/routes/index').call(app);
 
 // bind the websocket events
-require('./app/ws').call(server);
+require('./app/ws').call({http: server, express: app});
 
 // bind the server socket
 process.nextTick(function() {
