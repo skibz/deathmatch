@@ -6,12 +6,12 @@ var prefixer = require('../etc/prefixer');
 module.exports = {
   prototype: {
     add: function(player) {
-      if (this.isFull()) return;
+      if (this.isAdded(player) || this.isFull()) return;
       this._players[player] = player;
       this.tryBeginStarting();
     },
     rem: function(player) {
-      delete this._players[player];
+      if (this.isAdded(player)) delete this._players[player];
     },
     isAdded: function(player) {
       return player in this._players;
@@ -55,27 +55,14 @@ module.exports = {
 
     options = options || {};
 
-    if (!('timeout' in options)) {
-      options.timeout = 60000;
-    }
-    if (!('map' in options)) {
-      options.map = 'cp_badlands';
-    }
-    if (!('format' in options)) {
-      options.format = 6;
-    }
-    if (!('players' in options)) {
-      options.players = {};
-    }
-    if (!('captains' in options)) {
-      options.captains = {};
-    }
-    if (!('started' in options)) {
-      options.started = function() {};
-    }
-    if (!('postponed' in options)) {
-      options.postponed = function() {};
-    }
+    if (!('timeout' in options)) options.timeout = 60000;
+    if (!('map' in options)) options.map = 'cp_badlands';
+    if (!('server' in options)) options.server = 'MWEB_1';
+    if (!('format' in options)) options.format = 6;
+    if (!('players' in options)) options.players = {};
+    if (!('captains' in options)) options.captains = {};
+    if (!('started' in options)) options.started = function() {};
+    if (!('postponed' in options)) options.postponed = function() {};
 
     options.createdAt = +Date.now();
     options.starting = false;
