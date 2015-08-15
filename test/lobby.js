@@ -22,6 +22,7 @@ describe('lobby class', function() {
         map: 'abc',
         format: 2
       });
+      expect(lobby._server).to.equal('MWEB_1');
       expect(lobby._players).to.deep.equal({});
       expect(lobby._captains).to.deep.equal({});
       expect(lobby._map).to.equal('abc');
