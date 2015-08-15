@@ -1,3 +1,4 @@
+
 extends ./layout.jade
 
 block title
@@ -7,7 +8,16 @@ block content
 
   include ./nav.jade
 
-  select(id="client-list" multiple)
+  div(class="lobby-controls")
+    select(id="client-list", class="lobby-control lobby-list", multiple)
+
+    div(class="lobby-status")
+      select(id="lobby-players", class="lobby-list lobby-control", multiple)
+      span(id="lobby-map", class="lobby-control")
+      span(id="lobby-server", class="lobby-control")
+      span(id="lobby-format", class="lobby-control")
+      button(id="lobby-add", class="lobby-control lobby-button") !add
+      button(id="lobby-rem", class="lobby-control lobby-button") !rem
 
   main(class="main messages")
 
@@ -19,16 +29,8 @@ block content
 
     button(id="back-to-chat") Back
 
-    form(id="edit-my-account")
-      input(id="dm-email", type="email", placeholder="Email", value=user.email)
-      input(id="dm-displayname", type="text", value=user.display_name, placeholder="Display name")
-      input(type="submit", value="Save")
-
     form(id="edit-desktop-notifications")
       input(type="submit", value="Enable desktop notifications")
-
-    form(id="delete-my-account")
-      input(type="submit", value="Delete my account")
 
 block scripts
   script(src="/socket.io/socket.io.js")
