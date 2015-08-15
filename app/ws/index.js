@@ -1,105 +1,78 @@
 
 'use strict';
 
-var io, clients = {}, auth = {}, challenges = [];
+var Lobby = require('../pickups/lobby');
+var Rcon = require('../pickups/rcon');
 
-var resetLobby = {
-  id: null, // Date.now
-  format: 6,
-  players: [],
-  map: null,
-  server: null,
-  closing: false
-};
+var io;
+var clients = {}
+var auth = {};
+var lobby;
+var users;
 
-var lobby = {
-  id: null, // Date.now
-  format: 6,
-  players: [],
-  map: null,
-  server: null,
-  closing: false
-};
-
-// `this` should be bound to http server from /index.js
 module.exports = function() {
 
-  io = require('socket.io')(this);
+  io = require('socket.io')(this.http);
+  users = this.express.get('users.findOne');
+
+  lobby = Lobby.create({
+    started: io.emit.bind(io, 'lobby#started'),
+    postponed: io.emit.bind(io, 'lobby#postponed')
+  });
 
   io.on('connection', function(socket) {
 
-    socket.on('identify', function(steam, twitch, displayname, deathmatch) {
+    socket.on('identify', function(who) {
+      auth[socket.id] = who.deathmatch;
       clients[socket.id] = {
         socket: socket.id,
-        displayname: displayname,
-        twitch: twitch,
-        steam: steam
+        displayname: who.displayname,
+        // twitch: who.twitch,
+        steam: who.steam
       };
-      auth[socket.id] = deathmatch;
-      socket.emit(
-        'client list',
-        Object.keys(clients).map(function(key) {
-          return clients[key];
-        })
-      );
+
+      socket.emit('client list', Object.keys(clients).map(function(client) {
+        return clients[client];
+      }));
+
       socket.broadcast.emit('someone joined', clients[socket.id]);
     });
+
     socket.on('chat message', function(message) {
       socket.broadcast.emit('chat message', message);
     });
-    socket.on('public add player', function(player) {
-      // block the hax
-      if (player.socket !== socket.id) return;
 
-      // player isn't added and lobby has space
-      if (lobby.players.indexOf(player.socket) === -1 &&
-          lobby.players.length < lobby.format * 2) {
-
-        // if player is taking the final spot
-        if (lobby.players.length === (lobby.format * 2) - 1) {
-          lobby.closing = true;
-          lobby.closingTimer = setTimeout(function() {
-            // reset the lobby and tell everyone
-            // to join the server
-            lobby = resetLobby;
-          }, 60000);
-        }
-
-        lobby.players.push(player);
-        io.emit('lobby changed', lobby);
-      }
+    socket.on('public add player', function() {
+      socket.join('lobby', function(err) {
+        console.error('public add player', err);
+        var player = clients[socket.id].displayname;
+        lobby.add(player);
+        io.emit('lobby#add', player);
+      });
     });
-    socket.on('public remove player', function(player) {
-      // block the hax
-      if (player.socket !== socket.id) return;
-      // player is added
-      if (lobby.players.indexOf(player.socket) > -1) {
-        if (lobby.players.length === lobby.format * 2) {
-          // check for lobby.closing === false on the frontend
-          // and clear any timeouts for posting desktop notifications
-          // clear any timeouts, here, for resetting lobby entirely
-          clearTimeout(lobby.closingTimer);
-          lobby.closing = false;
-        }
-        for (var p in lobby.players) {
-          if (lobby.players[p].socket === player.socket) {
-            lobby.players.splice(p, 1);
-          }
-        }
-        io.emit('lobby changed', lobby);
-      }
+
+    socket.on('public rem player', function() {
+      socket.leave('lobby', function(err) {
+        console.error('public rem player', err);
+        var player = clients[socket.id].displayname;
+        lobby.rem(player);
+        io.emit('lobby#rem', player);
+      });
     });
-    socket.on('public last game', function() {}); // probably won't be needing this
-    socket.on('admin add players', function(players) {});
-    socket.on('admin remove players', function(players) {});
-    socket.on('admin change map', function(map) {});
-    socket.on('admin change server', function(server) {});
-    socket.on('admin change format', function(format) {});
+
     socket.on('error', console.error.bind(console));
+
     socket.on('disconnect', function() {
       io.emit('someone left', clients[socket.id]);
+      // remove client from lobby if added
+      var player = clients[socket.id].displayname;
+      if (lobby.isAdded(player)) {
+        lobby.rem(player);
+        io.emit('lobby#rem', player);
+      }
       delete clients[socket.id];
       delete auth[socket.id];
     });
+
   });
 };
