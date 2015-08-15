@@ -26,18 +26,20 @@ module.exports = {
       this._commands.push('sm_unban ' + player);
       return this;
     },
-    go: function() {
+    go: function(done) {
       var rcon = new SimpleRcon(this._host, this._port, this._rcon);
-      rcon.on('error', function(err) {
-        throw new Error(err);
-      }).once('authenticated', rcon.exec.bind(
-        rcon, this._commands.join(';'), rcon.close.bind(rcon)
-      ));
+      rcon.once('authenticated', rcon.exec.bind(
+        rcon, this._commands.join(';'), done.bind(
+          this, null, rcon.close.bind(rcon)
+        )
+      )).on('error', done);
     }
   },
   create: function(options) {
+
     options = options || {};
     options.commands = [];
+
     return Object.create(
       module.exports.prototype,
       prefixer(options)
