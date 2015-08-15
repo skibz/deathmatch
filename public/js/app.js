@@ -83,8 +83,8 @@ function announceLeft(who, next) {
  * @return {Function}
  */
 function clientList(clients, next) {
-  for (var i in clients) addClient(
-    clients[i], one('#client-list')
+  for (var client in clients) addClient(
+    clients[client], one('#client-list')
   );
   if (typeof next === 'function') return next();
 }
@@ -115,7 +115,7 @@ function addClient(who, to, next) {
   option.id = who.socket;
   option.textContent = who.displayname;
   option.setAttribute('data-steam', who.steam);
-  option.setAttribute('data-twitch', who.twitch);
+  // option.setAttribute('data-twitch', who.twitch);
   option.setAttribute('data-socket', who.socket);
   select.appendChild(option);
   if (typeof next === 'function') return next(who);
@@ -128,7 +128,7 @@ function addClient(who, to, next) {
  * @return {Function}
  */
 function removeClient(who, next) {
-  var option = one('#' + who.socket);
+  var option = one('#' + (who.socket || who));
   option.remove();
   if (typeof next === 'function') return next(who);
 }
@@ -176,13 +176,14 @@ socket.on('someone left', function(who) {
   removeClient(who, announceLeft);
 });
 
-socket.emit(
-  'identify',
-  user.getAttribute('data-steam'),
-  user.getAttribute('data-twitch'),
-  user.getAttribute('data-displayname'),
-  user.getAttribute('data-deathmatch')
-);
+one('#chat-login').onclick = socket.emit.bind(socket, 'identify', {
+  steam: user.getAttribute('data-steam'),
+  // twitch: user.getAttribute('data-twitch'),
+  displayname: user.getAttribute('data-displayname'),
+  deathmatch: user.getAttribute('data-deathmatch')
+});
+one('#lobby-add').onclick = socket.emit.bind(socket, 'public add player');
+one('#lobby-rem').onclick = socket.emit.bind(socket, 'public rem player');
 
 one('#message-form').onsubmit = messageFormSubmit;
 
