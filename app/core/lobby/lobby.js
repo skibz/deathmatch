@@ -62,8 +62,7 @@ module.exports = {
     options = options || {};
 
     if (!('timeout' in options)) options.timeout = 60000;
-    if (!('map' in options)) options.map = process.env.DEFAULT_MAP;
-    if (!('server' in options)) options.server = process.env.DEFAULT_SERVER;
+    if (!('map' in options)) options.map = 'cp_badlands';
     if (!('format' in options)) options.format = 6;
     if (!('players' in options)) options.players = {};
     if (!('started' in options)) options.started = function() {};

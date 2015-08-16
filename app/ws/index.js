@@ -14,6 +14,7 @@ module.exports = function() {
   var lobby = Lobby.create({
     server: servers[process.env.DEFAULT_SERVER],
     format: 6,
+    map: process.env.DEFAULT_MAP,
     timeout: 60000,
     started: function() {
       io.sockets.emit('lobby#started', {
