@@ -45,6 +45,7 @@ function appendMessage(message, next) {
   var div = document.createElement('div');
   div.textContent = message.sender + ': ' + message.body;
   one('main').appendChild(div);
+  one('.main.messages').scrollTop = 99999999;
   if (typeof next === 'function') return next(message);
 }
 
@@ -77,7 +78,7 @@ function emitMessage(message, next) {
 function addClient(who, to, next) {
   var select = to || one('#client-list');
   var option = document.createElement('option');
-  option.id = who.socket;
+  option.id = 'socket_' + who.socket;
   option.textContent = who.displayname;
   option.setAttribute('data-steam', who.steam);
   option.setAttribute('data-twitch', who.twitch);
@@ -87,7 +88,7 @@ function addClient(who, to, next) {
 }
 
 function removeClient(who, next) {
-  all('#' + (who.socket || 'id_' + who.id)).forEach(function(o) {
+  all('#' + ('socket_' + who.socket || 'id_' + who.id)).forEach(function(o) {
     o.remove();
   });
   if (typeof next === 'function') return next(who);
@@ -96,6 +97,16 @@ function removeClient(who, next) {
 function resetForm(next) {
   one('#message-form').reset();
   if (typeof next === 'function') return next();
+}
+
+function messageSubmit() {
+  var message = {
+    sender: one('[data-displayname]').getAttribute('data-displayname'),
+    body: one('#message-input').value
+  };
+  return message.body.length ? appendMessage(
+    message, emitMessage.bind(this, message, resetForm)
+  ) : undefined;
 }
 
 var socket = io();
@@ -178,15 +189,13 @@ one('#lobby-rem').onclick = throttle(
   socket.emit.bind(socket, 'lobby#player-rem'), 2000
 );
 
-one('#message-form').onsubmit = function(e) {
-  e.preventDefault();
-  var message = {
-    sender: one('[data-displayname]').getAttribute('data-displayname'),
-    body: one('#message-input').value
-  };
-  return message.body.length ? appendMessage(
-    message, emitMessage.bind(this, message, resetForm)
-  ) : undefined;
+one('#message-input').onkeyup = function(e) {
+  if (e.keyCode !== 13) return;
+  return messageSend();
+};
+
+one('#message-send').onsubmit = function(e) {
+  return messageSend();
 };
 
 one('#about').onclick = function(e) {
