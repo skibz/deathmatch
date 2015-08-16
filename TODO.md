@@ -1,7 +1,8 @@
 
 ##### at least these things
 
-- [ ] add dist glue for js, css and images
+- [x] add dist glue for js, css and images
+  + [ ] change hrefs in views
 - [ ] logo and favicon
 - [x] clientside progress bar
 - [x] desktop notifications

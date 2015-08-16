@@ -9,7 +9,7 @@
     "start": "./start",
     "nodemon": "./nodemon",
     "coverage": "istanbul cover _mocha --report lcovonly -- test -R spec && cat coverage/lcov.info | coveralls && rm -rf coverage",
-    "dist:css": "autoprefixer -b \"last 10 versions\" -o dist/css public/css/app.css"
+    "dist": "./script/dist"
   },
   "author": "Ant Cosentino <ant@io.co.za>",
   "license": "UNLICENSE",
