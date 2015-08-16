@@ -99,7 +99,7 @@ function clientList(clients, next) {
  * @return {Function}
  */
 function emitMessage(message, next) {
-  socket.emit('chat message', message);
+  socket.emit('chat#message', message);
   if (typeof next === 'function') return next();
 }
 
@@ -115,7 +115,7 @@ function addClient(who, to, next) {
   option.id = who.socket;
   option.textContent = who.displayname;
   option.setAttribute('data-steam', who.steam);
-  // option.setAttribute('data-twitch', who.twitch);
+  option.setAttribute('data-twitch', who.twitch);
   option.setAttribute('data-socket', who.socket);
   select.appendChild(option);
   if (typeof next === 'function') return next(who);
@@ -128,8 +128,9 @@ function addClient(who, to, next) {
  * @return {Function}
  */
 function removeClient(who, next) {
-  var option = one('#' + (who.socket || who));
-  option.remove();
+  all('#' + (who.socket || 'id_' + who.id)).forEach(function(o) {
+    o.remove();
+  });
   if (typeof next === 'function') return next(who);
 }
 
@@ -143,17 +144,81 @@ function resetForm(next) {
   if (typeof next === 'function') return next();
 }
 
-/**
- * wrap up the message string from textarea into an object
- * keyed by `sender` and `body`. immediately append the message
- * string to the message log and only then emit a socket event
- * containing the message object to be relayed (via websocket server)
- * to other connected clients.
- *
- * @param  {CustomEvent} e preventable, propagation stoppable
- * @return {Function}
- */
-function messageFormSubmit(e) {
+var socket = io();
+var user = one('#user');
+var permission; // notifications
+
+socket.on('client#identity', function() {
+
+  if ('Notification' in window) {
+    Notification.requestPermission(function(permission) {
+      if (permission === 'granted') {
+        permission = true;
+      }
+    });
+  }
+
+  socket.emit('client#identify', {
+    steam: user.getAttribute('data-steam'),
+    displayname: user.getAttribute('data-displayname'),
+    twitch: user.getAttribute('data-twitch')
+  });
+});
+
+socket.on('client#list', clientList);
+socket.on('chat#message', appendMessage);
+socket.on('chat#joined', function(who) {
+  addClient(who, one('#client-list'), announceJoined);
+});
+
+socket.on('chat#left', function(who) {
+  removeClient(who, announceLeft);
+});
+
+socket.on('lobby#rem', removeClient);
+
+socket.on('lobby#add', function(who) {
+  var option = document.createElement('option');
+  option.id = 'id_' + who.id;
+  option.textContent = who.displayname;
+  one('#lobby-players').appendChild(option);
+});
+
+socket.on('lobby#started', function(details) {
+
+  [].slice.call(
+    one('#lobby-players').childNodes
+  ).forEach(function(child) {
+    child.remove();
+  });
+
+  one('main').innerHTML += '<div>[deathmat.ch]: Pickup has begun - Click <a href="' +
+    details.connect + '">here</a> to join!</div>';
+
+  if (!permission) return;
+
+  var notification = new Notification(
+    'Pickup has begun!', {body: 'Click this message to join'}
+  );
+
+  notification.onclick = function(e) {
+    window.open(details.connect);
+  };
+});
+
+socket.on('lobby#postponed', function() {
+  console.log('lobby postponed');
+});
+
+one('#lobby-add').onclick = socket.emit.bind(
+  socket, 'lobby#player-add'
+);
+
+one('#lobby-rem').onclick = socket.emit.bind(
+  socket, 'lobby#player-rem'
+);
+
+one('#message-form').onsubmit = function(e) {
   e.preventDefault();
   var message = {
     sender: one('[data-displayname]').getAttribute('data-displayname'),
@@ -162,85 +227,18 @@ function messageFormSubmit(e) {
   return message.body.length ? appendMessage(
     message, emitMessage.bind(this, message, resetForm)
   ) : undefined;
-}
-
-var socket = io();
-var user = one('#user');
-
-socket.on('client list', clientList);
-socket.on('chat message', appendMessage);
-socket.on('someone joined', function(who) {
-  addClient(who, one('#client-list'), announceJoined);
-});
-socket.on('someone left', function(who) {
-  removeClient(who, announceLeft);
-});
-
-one('#chat-login').onclick = socket.emit.bind(socket, 'identify', {
-  steam: user.getAttribute('data-steam'),
-  // twitch: user.getAttribute('data-twitch'),
-  displayname: user.getAttribute('data-displayname'),
-  deathmatch: user.getAttribute('data-deathmatch')
-});
-one('#lobby-add').onclick = socket.emit.bind(socket, 'public add player');
-one('#lobby-rem').onclick = socket.emit.bind(socket, 'public rem player');
-
-one('#message-form').onsubmit = messageFormSubmit;
-
-one('#edit-desktop-notifications').onsubmit = function(e) {
-  e.preventDefault();
-  Notification.requestPermission(function(permission) {
-    if (permission === 'granted') {
-    //   var notification = new Notification('Just testing', {
-    //     body: ''
-    //   });
-
-    //   notification.onclick = function(e) {};
-    //   notification.onshow = function(e) {};
-    //   notification.onclose = function(e) {};
-    //   notification.onerror = function(e) {};
-    }
-  });
 };
 
-one('#edit-my-account').onsubmit = function(e) {
-  e.preventDefault();
-  new sexhr().req({
-    url: '/user/' + user.getAttribute('data-nedb'),
-    method: 'PUT',
-    json: true,
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({
-      email: one('#dm-email').value,
-      displayname: one('#dm-displayname').value,
-      deathmatch: user.getAttribute('data-deathmatch')
-    }),
-    done: function(err, res) { if (err) throw err; }
-  });
-};
-
-one('#delete-my-account').onsubmit = function(e) {
-  e.preventDefault();
-  new sexhr().req({
-    url: '/user/' + user.getAttribute('data-nedb'),
-    method: 'DELETE',
-    json: true,
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({deathmatch: user.getAttribute('data-deathmatch')}),
-    done: location.assign.bind(location, '/logout')
-  });
-};
-
-one('#edit-profile').onclick = function(e) {
-  one('#client-list').style.display = 'none';
+one('#about').onclick = function(e) {
+  one('.lobby-controls').style.display = 'none';
   one('main').style.display = 'none';
   one('#message-form').style.display = 'none';
-  one('#profile-container').classList.remove('hidden');
+  one('#about-container').classList.remove('hidden');
 };
 
 one('#back-to-chat').onclick = function(e) {
-  one('#profile-container').classList.add('hidden');
-  one('#client-list').style.display = '';
+  one('#about-container').classList.add('hidden');
+  one('.lobby-controls').style.display = '';
   one('main').style.display = '';
   one('#message-form').style.display = '';
 };
