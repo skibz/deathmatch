@@ -2,7 +2,7 @@
 var chai = require('chai');
 var expect = chai.expect;
 
-var Rcon = require('../app/pickups/rcon');
+var Rcon = require('../app/core/lobby/rcon');
 
 describe('rcon class', function() {
 

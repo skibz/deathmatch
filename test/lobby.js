@@ -2,7 +2,7 @@
 var chai = require('chai');
 var expect = chai.expect;
 
-var Lobby = require('../app/pickups/lobby');
+var Lobby = require('../app/core/lobby/lobby');
 
 describe('lobby class', function() {
 
