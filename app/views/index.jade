@@ -21,15 +21,15 @@ block content
 
   main(class="main messages")
 
-  form(id="message-form", class="chat-input")
+  div(id="message-form", class="chat-input")
     textarea(id="message-input", class="message-input", rows="5", placeholder="Say something...")
-    input(class="chat-input-submit", type="submit", value="Send")
+    button(id="message-send", class="chat-input-submit") Send
 
   div(id="about-container", class="hidden about-container")
     button(id="back-to-chat") Back to chat
     div
       h5 About
-      span Released into the #[a(target="_blank", href="http://unlicense.org") public domain] and available at #[a(target="_blank", href="https://github.com/skibz/deathmatch") GitHub].
+      span deathmat.ch source code has been released into the #[a(target="_blank", href="http://unlicense.org") public domain] and you'll find it available at #[a(target="_blank", href="https://github.com/skibz/deathmatch") GitHub].
 
 block scripts
   script(src="bundle.js")
