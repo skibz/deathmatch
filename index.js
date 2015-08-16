@@ -20,8 +20,8 @@ app.set('view engine', VIEW_ENGINE);
 // make static accessible for various middlewares
 app.set('express.static', express.static);
 
-// initialise database collections
-require('./app/database').call(app);
+app.set('lobby.servers', require('./app/pickups/servers'));
+app.set('lobby.admins', require('./app/pickups/admins'));
 
 // attach the middleware layers
 require('./app/middleware/static').call(app);
@@ -33,7 +33,6 @@ server = http.createServer(app);
 
 // bind the app routes
 require('./app/routes/auth').call(app);
-require('./app/routes/user').call(app);
 require('./app/routes/index').call(app);
 
 // bind the websocket events
