@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+{
+  autoprefixer -b "last 10 versions" public/css/pace.theme.css | cleancss --skip-rebase --skip-advanced \
+    --skip-aggressive-merging --skip-restructuring public/css/pace.theme.css
+
+  echo
+
+  autoprefixer -b "last 10 versions" public/css/app.css | cleancss --skip-rebase --skip-advanced \
+    --skip-aggressive-merging --skip-restructuring public/css/app.css
+} >> dist/css/bundle.css
+
+{
+  uglifyjs public/js/app.js
+} >> dist/js/bundle.js
