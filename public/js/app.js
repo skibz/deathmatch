@@ -195,7 +195,7 @@ one('#message-input').onkeyup = function(e) {
   return messageSubmit();
 };
 
-one('#message-send').onsubmit = function(e) {
+one('#message-send').onclick = function(e) {
   return messageSubmit();
 };
 
