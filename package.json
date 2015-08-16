@@ -8,11 +8,13 @@
     "test": "istanbul test _mocha -- -R spec",
     "start": "./start",
     "nodemon": "./nodemon",
-    "coverage": "istanbul cover _mocha --report lcovonly -- test -R spec && cat coverage/lcov.info | coveralls && rm -rf coverage"
+    "coverage": "istanbul cover _mocha --report lcovonly -- test -R spec && cat coverage/lcov.info | coveralls && rm -rf coverage",
+    "dist:css": "autoprefixer -b \"last 10 versions\" -o dist/css public/css/app.css"
   },
   "author": "Ant Cosentino <ant@io.co.za>",
   "license": "UNLICENSE",
   "devDependencies": {
+    "autoprefixer": "^5.2.0",
     "chai": "^3.1.0",
     "chai-as-promised": "^5.1.0",
     "chakram": "^1.0.1",
