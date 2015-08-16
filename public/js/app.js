@@ -191,11 +191,12 @@ one('#lobby-rem').onclick = throttle(
 
 one('#message-input').onkeyup = function(e) {
   if (e.keyCode !== 13) return;
-  return messageSend();
+  else e.preventDefault();
+  return messageSubmit();
 };
 
 one('#message-send').onsubmit = function(e) {
-  return messageSend();
+  return messageSubmit();
 };
 
 one('#about').onclick = function(e) {
