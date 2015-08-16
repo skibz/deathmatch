@@ -1,21 +1,17 @@
 
 'use strict';
 
-var Lobby = require('../pickups/lobby');
-var Rcon = require('../pickups/rcon');
+var Lobby = require('../core/lobby/lobby');
+var Rcon = require('../core/lobby/rcon');
 
-var io;
 var clients = {};
-var lobby;
-var servers, admins;
 
 module.exports = function() {
 
-  io = require('socket.io')(this.http);
-  servers = this.express.get('lobby.servers');
-  admins = this.express.get('lobby.admins');
-
-  lobby = Lobby.create({
+  var io = require('socket.io')(this.http);
+  var servers = this.express.get('lobby.servers');
+  var admins = this.express.get('lobby.admins');
+  var lobby = Lobby.create({
     server: servers.mweb1,
     format: 6,
     timeout: 60000,
