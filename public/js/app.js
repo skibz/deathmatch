@@ -104,6 +104,9 @@ function messageSubmit() {
     sender: one('[data-displayname]').getAttribute('data-displayname'),
     body: one('#message-input').value
   };
+
+  if (message.body === '') return;
+
   return message.body.length ? appendMessage(
     message, emitMessage.bind(this, message, resetForm)
   ) : undefined;
