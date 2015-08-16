@@ -25,11 +25,15 @@ body {
   padding: 0 1em;
 }
 
+a, a:visited {
+  color: #000;
+}
+
 html, body,
 .nav, .mast,
 .login-container,
 .logout-container,
-.profile-container,
+.about-container,
 .register-container,
 .main, .messages,
 .chat-input, .steam-anchor,
@@ -41,6 +45,10 @@ html, body,
 .nav {
   margin: 50px 0 0;
   flex-direction: row;
+}
+
+#about {
+  cursor: pointer;
 }
 
 .nav.nav-centred {
@@ -79,7 +87,6 @@ html, body,
 .username {
   text-align: right;
   line-height: 1.5em;
-  cursor: pointer;
 }
 
 .user-avatar {
@@ -87,8 +94,6 @@ html, body,
   max-width: 42px;
   max-height: 42px;
   border-radius: 6px;
-  border: 1px solid;
-  cursor: pointer;
 }
 
 .logout-submit {
@@ -99,13 +104,29 @@ html, body,
   margin: auto 0 0;
   display: flex;
   overflow-y: scroll;
-  height: 60%;
+  height: 45%;
   box-shadow: inset 0 0 1px #000;
+  background-color: transparent;
   padding: 0.35em;
 }
 
-.profile-container {
-  margin: 50px 0 0;
+.main div {
+  margin: 5px 0 0 0;
+}
+
+.about-container {
+  margin: 50px auto 0 auto;
+  display: flex;
+  flex-direction: row;
+}
+
+.about-container button {
+  width: 125px;
+  margin-right: 10px;
+  border: 1px solid #9f9f9f;
+  border-radius: 3px;
+  background-color: transparent;
+  cursor: pointer;
 }
 
 .chat-input,
@@ -113,11 +134,20 @@ html, body,
   margin: auto 0;
 }
 
+.chat-input-submit {
+  margin: 10px 0 0 0;
+  border: 1px solid #9f9f9f;
+  border-radius: 3px;
+  background-color: transparent;
+  cursor: pointer;
+}
+
 .message-input {
   resize: none;
   border: none;
   padding: 0.35em;
   box-shadow: inset 0 0 1px #000;
+  background-color: transparent;
 }
 
 .notification-body,
@@ -142,4 +172,44 @@ html, body,
 .notification-parent,
 .message-parent {
   margin: 5px 0;
+}
+
+.lobby-controls {
+  display: flex;
+  flex-direction: row;
+  margin: auto 0 0 0;
+  align-content: flex-start;
+}
+
+.lobby-list {
+  width: 200px;
+  height: 150px;
+  border: none;
+  box-shadow: inset 0 0 1px #000;
+  background-color: transparent;
+}
+
+.lobby-header {
+  margin: 0 auto 10px;
+}
+
+.lobby-status,
+.clients-status {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+}
+
+.lobby-buttons {
+  display: flex;
+  margin: 10px 0 0 0;
+}
+
+.lobby-button {
+  width: 48%;
+  margin: auto;
+  border: 1px solid #9f9f9f;
+  border-radius: 3px;
+  background-color: transparent;
+  cursor: pointer;
 }

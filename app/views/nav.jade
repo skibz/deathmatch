@@ -3,7 +3,7 @@ nav(class="nav")
 
   header(class="mast")
     h1 deathmat.ch
-    h5 Start a fight.
+    h5(id="about", class="by-line") Start a fight.
 
   if user
 
@@ -23,7 +23,6 @@ nav(class="nav")
       )
 
     img(
-      id="edit-profile",
       class="user-avatar",
       src=user.deathmatch_avatar || user.steam_avatar_medium || user.twitch_avatar,
       alt=user.display_name

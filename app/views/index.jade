@@ -9,15 +9,17 @@ block content
   include ./nav.jade
 
   div(class="lobby-controls")
-    select(id="client-list", class="lobby-control lobby-list", multiple)
+
+    div(class="clients-status")
+      span(class="lobby-header") Chatting
+      select(id="client-list", class="lobby-control lobby-list", multiple)
 
     div(class="lobby-status")
+      span(class="lobby-header") Playing
       select(id="lobby-players", class="lobby-list lobby-control", multiple)
-      span(id="lobby-map", class="lobby-control")
-      span(id="lobby-server", class="lobby-control")
-      span(id="lobby-format", class="lobby-control")
-      button(id="lobby-add", class="lobby-control lobby-button") !add
-      button(id="lobby-rem", class="lobby-control lobby-button") !rem
+      div(class="lobby-buttons")
+        button(id="lobby-add", class="lobby-control lobby-button") !add
+        button(id="lobby-rem", class="lobby-control lobby-button") !rem
 
   main(class="main messages")
 
@@ -25,12 +27,11 @@ block content
     textarea(id="message-input", class="message-input", rows="5", placeholder="Say something...")
     input(class="chat-input-submit", type="submit", value="Send")
 
-  div(id="profile-container", class="hidden profile-container")
-
-    button(id="back-to-chat") Back
-
-    form(id="edit-desktop-notifications")
-      input(type="submit", value="Enable desktop notifications")
+  div(id="about-container", class="hidden about-container")
+    button(id="back-to-chat") Back to chat
+    div
+      h5 About
+      span Released into the #[a(target="_blank", href="http://unlicense.org") public domain] and available at #[a(target="_blank", href="https://github.com/skibz/deathmatch") GitHub].
 
 block scripts
   script(src="/socket.io/socket.io.js")
