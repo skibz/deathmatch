@@ -22,6 +22,7 @@ app.set('express.static', express.static);
 
 app.set('lobby.servers', require('./app/pickups/servers'));
 app.set('lobby.admins', require('./app/pickups/admins'));
+app.set('lobby.maps', require('./app/pickups/maps'));
 
 // attach the middleware layers
 require('./app/middleware/static').call(app);
