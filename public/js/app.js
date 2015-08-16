@@ -4,17 +4,12 @@
 function throttle(callback, limit) {
   var wait = false;
   return function() {
-    if (!wait) {
-      callback();
-      console.log('called callback');
-      wait = true;
-      setTimeout(function() {
-        wait = false;
-        console.log('not wait');
-      }, limit);
-    } else {
-      console.log('wait');
-    }
+    if (wait) return;
+    callback();
+    wait = true;
+    setTimeout(function() {
+      wait = false;
+    }, limit);
   }
 }
 
