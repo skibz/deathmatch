@@ -24,13 +24,11 @@ describe('lobby class', function() {
       });
       expect(lobby._server).to.equal('MWEB_1');
       expect(lobby._players).to.deep.equal({});
-      expect(lobby._captains).to.deep.equal({});
       expect(lobby._map).to.equal('abc');
       expect(lobby._format).to.equal(2);
       expect(lobby._timeout).to.be.greaterThan(0);
       expect(lobby._starting).to.equal(false);
       expect(lobby._starter).to.be.null;
-      expect(lobby._createdAt).to.be.greaterThan(0);
 
       describe('defaults', function() {
         var lobby = Lobby.create({});
@@ -162,7 +160,22 @@ describe('lobby class', function() {
             format: 1,
             timeout: 10,
             started: function() {
-              expect(lobby._starter).to.not.equal(null);
+              return done();
+            }
+          });
+          lobby.add('1');
+          // expect(lobby._starter).to.equal(null);
+          lobby.add('2');
+          // expect(lobby._starter).to.not.equal(null);
+        });
+        it('should reset the object back to default state after the _started callback has been invoked', function(done) {
+          var lobby = Lobby.create({
+            format: 1,
+            timeout: 10,
+            started: function() {
+              expect(lobby._starter).to.be.null;
+              expect(lobby._starting).to.equal(false);
+              expect(lobby._players).to.deep.equal({});
               return done();
             }
           });
@@ -178,7 +191,6 @@ describe('lobby class', function() {
             format: 1,
             timeout: 10,
             postponed: function() {
-              expect(lobby._starter).to.be.null;
               return done();
             }
           });
