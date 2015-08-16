@@ -20,9 +20,9 @@ app.set('view engine', VIEW_ENGINE);
 // make static accessible for various middlewares
 app.set('express.static', express.static);
 
-app.set('lobby.servers', require('./app/pickups/servers'));
-app.set('lobby.admins', require('./app/pickups/admins'));
-app.set('lobby.maps', require('./app/pickups/maps'));
+app.set('lobby.servers', JSON.parse(process.env.SERVERS_JSON));
+app.set('lobby.admins', JSON.parse(process.env.ADMINS_JSON));
+app.set('lobby.maps', JSON.parse(process.env.MAPS_JSON));
 
 // attach the middleware layers
 require('./app/middleware/static').call(app);
