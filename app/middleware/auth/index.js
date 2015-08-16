@@ -28,12 +28,10 @@ module.exports = function() {
   this.use(passport.session());
 
   passport.serializeUser(function(user, done) {
-    console.log('serialiseUser', user);
     done(null, user);
   });
 
   passport.deserializeUser(function(obj, done) {
-    console.log('deserialiseUser', obj);
     done(null, obj);
   });
 
