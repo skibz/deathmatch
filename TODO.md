@@ -1,6 +1,7 @@
 
 ##### at least these things
 
+- [ ] add dist glue for js, css and images
 - [ ] logo and favicon
 - [x] clientside progress bar
 - [x] desktop notifications
