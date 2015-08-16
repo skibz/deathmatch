@@ -11,11 +11,9 @@ block content
   div(class="lobby-controls")
 
     div(class="clients-status")
-      span(class="lobby-header") Chatting
       select(id="client-list", class="lobby-control lobby-list", multiple)
 
     div(class="lobby-status")
-      span(class="lobby-header") Playing
       select(id="lobby-players", class="lobby-list lobby-control", multiple)
       div(class="lobby-buttons")
         button(id="lobby-add", class="lobby-control lobby-button") !add
@@ -34,4 +32,5 @@ block content
       span Released into the #[a(target="_blank", href="http://unlicense.org") public domain] and available at #[a(target="_blank", href="https://github.com/skibz/deathmatch") GitHub].
 
 block scripts
+  script(src="bundle.js")
   script(src="/socket.io/socket.io.js")
