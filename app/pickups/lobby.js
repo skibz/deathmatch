@@ -48,6 +48,12 @@ module.exports = {
         this._starter = null;
         return postponed();
       }
+
+      // reset the object for posterity
+      this._players = {};
+      this._starting = false;
+      this._starter = null;
+
       return started();
     }
   },
@@ -60,11 +66,9 @@ module.exports = {
     if (!('server' in options)) options.server = 'MWEB_1';
     if (!('format' in options)) options.format = 6;
     if (!('players' in options)) options.players = {};
-    if (!('captains' in options)) options.captains = {};
     if (!('started' in options)) options.started = function() {};
     if (!('postponed' in options)) options.postponed = function() {};
 
-    options.createdAt = +Date.now();
     options.starting = false;
     options.starter = null;
 
