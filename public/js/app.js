@@ -105,7 +105,7 @@ function messageSubmit() {
     body: one('#message-input').value
   };
 
-  if (message.body === '') return;
+  if (message.body === '' || message.body === '\n') return;
 
   return message.body.length ? appendMessage(
     message, emitMessage.bind(this, message, resetForm)
