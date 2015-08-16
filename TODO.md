@@ -1,6 +1,7 @@
 
 ##### at least these things
 
+- [ ] logo and favicon
 - [x] clientside progress bar
 - [x] desktop notifications
   + [x] lobby announcements
