@@ -1,6 +1,23 @@
 
 'use strict';
 
+function throttle(callback, limit) {
+  var wait = false;
+  return function() {
+    if (!wait) {
+      callback();
+      console.log('called callback');
+      wait = true;
+      setTimeout(function() {
+        wait = false;
+        console.log('not wait');
+      }, limit);
+    } else {
+      console.log('wait');
+    }
+  }
+}
+
 /**
  * filters any dangerous characters
  * @param  {String} string
@@ -156,6 +173,12 @@ socket.on('client#identity', function() {
         permission = true;
       }
     });
+  } else {
+    alert(
+      'Hey, I\'m afraid you won\'t be able to use this ' +
+      'site until you update your browser to something more modern.'
+    );
+    window.location = 'https://google.com/chrome';
   }
 
   socket.emit('client#identify', {
@@ -210,12 +233,12 @@ socket.on('lobby#postponed', function() {
   console.log('lobby postponed');
 });
 
-one('#lobby-add').onclick = socket.emit.bind(
-  socket, 'lobby#player-add'
+one('#lobby-add').onclick = throttle(
+  socket.emit.bind(socket, 'lobby#player-add'), 2000
 );
 
-one('#lobby-rem').onclick = socket.emit.bind(
-  socket, 'lobby#player-rem'
+one('#lobby-rem').onclick = throttle(
+  socket.emit.bind(socket, 'lobby#player-rem'), 2000
 );
 
 one('#message-form').onsubmit = function(e) {

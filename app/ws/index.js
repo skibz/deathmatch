@@ -54,20 +54,24 @@ module.exports = function() {
 
     socket.on('lobby#player-add', function() {
       var player = clients[socket.id].displayname;
-      lobby.add(player);
-      io.emit('lobby#add', {
-        displayname: player,
-        id: clients[socket.id].steam || clients[socket.id].twitch
-      });
+      if (!lobby.isAdded(player)) {
+        io.emit('lobby#add', {
+          displayname: player,
+          id: clients[socket.id].steam || clients[socket.id].twitch
+        });
+        lobby.add(player);
+      }
     });
 
     socket.on('lobby#player-rem', function() {
       var player = clients[socket.id].displayname;
-      lobby.rem(player);
-      io.emit('lobby#rem', {
-        displayname: player,
-        id: clients[socket.id].steam || clients[socket.id].twitch
-      });
+      if (lobby.isAdded(player)) {
+        io.emit('lobby#rem', {
+          displayname: player,
+          id: clients[socket.id].steam || clients[socket.id].twitch
+        });
+        lobby.rem(player);
+      }
     });
 
     socket.on('error', console.error.bind(console));
