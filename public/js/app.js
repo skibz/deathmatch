@@ -95,7 +95,7 @@ function removeClient(who, next) {
 }
 
 function resetForm(next) {
-  one('#message-form').reset();
+  one('#message-input').value = '';
   if (typeof next === 'function') return next();
 }
 
