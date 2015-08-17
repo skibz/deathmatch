@@ -13,6 +13,7 @@
   + [ ] disable other droplet and resize this one to $10
   + [x] as upstart service
   + [ ] with least privilege
+  + [ ] and `chroot` jailed
   + [x] stderr logging to file
   + [x] stdout logging to file
   + [ ] [push to deploy](https://www.digitalocean.com/community/tutorials/how-to-set-up-automatic-deployment-with-git-with-a-vps) from ci environment
