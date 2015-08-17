@@ -176,16 +176,31 @@ one('#lobby-rem').onclick = throttle(
   socket.emit.bind(socket, 'lobby#player-rem'), 1000
 );
 
-one('#message-input').onkeyup = function(e) {
+one('#message-input').onkeydown = function(e) {
   // check if message actually has REAL content
   // and not just newlines and other invisible
   // shit
-  if (e.keyCode === 13) {
+
+  if (e.keyCode === 13 && !e.shiftKey) {
     var message = {
       sender: one('[data-displayname]').getAttribute('data-displayname'),
       body: one('#message-input').value
     };
-    return messageSubmit(message);
+    messageSubmit(message);
+  } else if (e.keyCode === 9) {
+    // pressing tab
+    e.preventDefault();
+    one('#message-input').value += '\t';
+  } else {
+    return;
+  }
+
+};
+
+one('#message-input').onkeyup = function(e) {
+  // autogrow the height of the textarea
+  if (e.target.scrollHeight > e.target.clientHeight) {
+    e.target.style.height = e.target.scrollHeight + 'px';
   }
 };
 
