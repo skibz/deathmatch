@@ -99,14 +99,7 @@ function resetForm(next) {
   if (typeof next === 'function') return next();
 }
 
-function messageSubmit() {
-  var message = {
-    sender: one('[data-displayname]').getAttribute('data-displayname'),
-    body: one('#message-input').value
-  };
-
-  if (message.body === '' || message.body === '\n') return;
-
+function messageSubmit(message) {
   return message.body.length ? appendMessage(
     message, emitMessage.bind(this, message, resetForm)
   ) : undefined;
@@ -159,25 +152,16 @@ socket.on('lobby#add', function(who) {
 });
 
 socket.on('lobby#started', function(details) {
-
   [].slice.call(
     one('#lobby-players').childNodes
   ).forEach(function(child) {
     child.remove();
   });
-
   one('main').innerHTML += '<div>[deathmat.ch]: Pickup has begun - Click <a href="' +
     details.connect + '">here</a> to join!</div>';
-
   if (!permission) return;
-
-  var notification = new Notification(
-    'Pickup has begun!', {body: 'Click this message to join'}
-  );
-
-  notification.onclick = function(e) {
-    window.open(details.connect);
-  };
+  var notification = new Notification('Pickup has begun!', {body: 'Click this message to join'});
+  notification.onclick = window.open.bind(window, details.connect);
 });
 
 socket.on('lobby#postponed', function() {
@@ -185,22 +169,36 @@ socket.on('lobby#postponed', function() {
 });
 
 one('#lobby-add').onclick = throttle(
-  socket.emit.bind(socket, 'lobby#player-add'), 2000
+  socket.emit.bind(socket, 'lobby#player-add'), 1000
 );
 
 one('#lobby-rem').onclick = throttle(
-  socket.emit.bind(socket, 'lobby#player-rem'), 2000
+  socket.emit.bind(socket, 'lobby#player-rem'), 1000
 );
 
 one('#message-input').onkeyup = function(e) {
-  if (e.keyCode !== 13) return;
-  else e.preventDefault();
-  return messageSubmit();
+  // check if message actually has REAL content
+  // and not just newlines and other invisible
+  // shit
+  if (e.keyCode === 13) {
+    var message = {
+      sender: one('[data-displayname]').getAttribute('data-displayname'),
+      body: one('#message-input').value
+    };
+    return messageSubmit(message);
+  }
 };
 
-one('#message-send').onclick = function(e) {
-  return messageSubmit();
-};
+one('#message-send').onclick = throttle(function() {
+  // check if message actually has REAL content
+  // and not just newlines and other invisible
+  // shit
+  var message = {
+    sender: one('[data-displayname]').getAttribute('data-displayname'),
+    body: one('#message-input').value
+  };
+  return messageSubmit(message);
+}, 1000);
 
 one('#about').onclick = function(e) {
   one('.lobby-controls').style.display = 'none';
