@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 
-mkdir -p dist/img
-
-rm dist/*.css dist/*.js
+rm public/bundle.*
 
 {
   postcss -u autoprefixer < public/css/pace.theme.css | cleancss --skip-rebase --skip-advanced \
@@ -10,13 +8,10 @@ rm dist/*.css dist/*.js
   echo
   postcss -u autoprefixer < public/css/app.css | cleancss --skip-rebase --skip-advanced \
     --skip-aggressive-merging --skip-restructuring
-} >> dist/bundle.css
+} >> public/bundle.css
 
 {
-  uglifyjs public/js/pace.setup.js
-  uglifyjs public/js/pace.min.js
-  uglifyjs public/js/app.js
-} >> dist/bundle.js
-
-cp -R public/favicon.ico dist
-cp -R public/img/* dist/img
+  uglifyjs --screw-ie8 public/js/pace.setup.js
+  cat public/js/pace.min.js
+  uglifyjs --screw-ie8 public/js/app.js
+} >> public/bundle.js
