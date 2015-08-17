@@ -11,3 +11,4 @@ start
 nodemon
 
 dist/
+public/bundle.*
