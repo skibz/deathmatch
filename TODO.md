@@ -9,6 +9,7 @@
   + [x] lobby announcements
   + [ ] chat mentions/events?
 - [ ] server
+  + [ ] disable other droplet and resize this one to $10
   + [x] as upstart service
   + [ ] with least privilege
   + [x] stderr logging to file
