@@ -3,6 +3,4 @@ language: node_js
 sudo: required
 node_js:
   - '0.12'
-after_script:
-  - npm run coverage
-  - 'if [[ "$(init-checkconf script/deathmatch.conf)" != "File script/deathmatch.conf: syntax ok" ]]; then echo "uh oh" && return 1 fi'
+after_script: npm run coverage
