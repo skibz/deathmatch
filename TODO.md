@@ -1,6 +1,7 @@
 
 ##### at least these things
 
+- [ ] add an error route to express app
 - [x] add dist glue for js, css and images
   + [ ] change hrefs in views
 - [x] logo and favicon
@@ -14,12 +15,14 @@
   + [ ] with least privilege
   + [x] stderr logging to file
   + [x] stdout logging to file
-  + [ ] deploy from ci
+  + [ ] [push to deploy](https://www.digitalocean.com/community/tutorials/how-to-set-up-automatic-deployment-with-git-with-a-vps) from ci environment
 - [x] user auth
   + [x] twitch
   + [x] steam
     * [x] not going to bother with email registration. if i do, it'll be invitation based.
 - [ ] some kind of an about and/or settings page
+  + [ ] make it a `?` button near the username area
+    * [ ] change the link from the by-line
   + [ ] documentation
   + [ ] links
   + [ ] desktop notification permission request
