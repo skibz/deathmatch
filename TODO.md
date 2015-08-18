@@ -16,7 +16,7 @@
   + [ ] and `chroot` jailed
   + [x] stderr logging to file
   + [x] stdout logging to file
-  + [x] [push to deploy](https://www.digitalocean.com/community/tutorials/how-to-set-up-automatic-deployment-with-git-with-a-vps) from ci environment
+  + [ ] [push to deploy](https://www.digitalocean.com/community/tutorials/how-to-set-up-automatic-deployment-with-git-with-a-vps) from ci environment
 - [x] user auth
   + [x] twitch
   + [x] steam
