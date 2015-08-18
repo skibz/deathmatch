@@ -3,4 +3,6 @@ language: node_js
 sudo: required
 node_js:
   - '0.12'
-after_script: npm run coverage
+after_script:
+  - 'npm run coverage'
+  # - 'git push ssh://deathmatch@deathmat.ch/var/repo/deathmat.ch.git develop'

@@ -10,13 +10,13 @@
   + [x] lobby announcements
   + [ ] chat mentions/events?
 - [ ] server
-  + [ ] disable other droplet and resize this one to $10
+  + [ ] disable other droplet
   + [x] as upstart service
-  + [ ] with least privilege
+  + [x] with least privilege
   + [ ] and `chroot` jailed
   + [x] stderr logging to file
   + [x] stdout logging to file
-  + [ ] [push to deploy](https://www.digitalocean.com/community/tutorials/how-to-set-up-automatic-deployment-with-git-with-a-vps) from ci environment
+  + [x] [push to deploy](https://www.digitalocean.com/community/tutorials/how-to-set-up-automatic-deployment-with-git-with-a-vps) from ci environment
 - [x] user auth
   + [x] twitch
   + [x] steam
