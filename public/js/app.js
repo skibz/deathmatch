@@ -183,10 +183,6 @@ one('#lobby-rem').onclick = throttle(
 );
 
 one('#message-input').onkeydown = function(e) {
-  // check if message actually has REAL content
-  // and not just newlines and other invisible
-  // shit
-
   if (e.keyCode === 13 && !e.shiftKey) {
     e.preventDefault();
     e.stopPropagation();
@@ -206,17 +202,7 @@ one('#message-input').onkeydown = function(e) {
 
 };
 
-one('#message-input').onkeyup = function(e) {
-  // autogrow the height of the textarea
-  if (e.target.scrollHeight > e.target.clientHeight) {
-    e.target.style.height = e.target.scrollHeight + 'px';
-  }
-};
-
 one('#message-send').onclick = throttle(function() {
-  // check if message actually has REAL content
-  // and not just newlines and other invisible
-  // shit
   var message = {
     sender: one('[data-displayname]').getAttribute('data-displayname'),
     body: one('#message-input').value
