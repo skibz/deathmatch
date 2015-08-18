@@ -16,17 +16,13 @@ module.exports = function() {
     format: 6,
     map: process.env.DEFAULT_MAP,
     timeout: 60000,
-    started: function() {
-      io.sockets.emit('lobby#started', {
-        connect: 'steam://connect/' +
-          lobby._server.host + ':' +
-          lobby._server.port + '/' +
-          lobby._server.password
-      });
-    },
-    postponed: function() {
-      io.sockets.emit('lobby#postponed');
-    }
+    started: io.emit.bind(io, 'lobby#started', {
+      connect: 'steam://connect/' +
+        lobby._server.host + ':' +
+        lobby._server.port + '/' +
+        lobby._server.password
+    }),
+    postponed: io.emit.bind(io, 'lobby#postponed')
   });
 
   io.on('connection', function(socket) {
@@ -76,8 +72,6 @@ module.exports = function() {
       });
     });
 
-    socket.on('error', console.error.bind(console));
-
     socket.on('disconnect', function() {
       var client = clients[socket.id];
       io.emit('chat#left', client);
@@ -91,6 +85,8 @@ module.exports = function() {
       });
       delete clients[socket.id];
     });
+
+    socket.on('error', console.error.bind(console));
 
   });
 };
