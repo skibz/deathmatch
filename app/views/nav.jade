@@ -17,13 +17,11 @@ nav(class="nav")
         id="user",
         data-displayname=user.display_name,
         data-steam=user.steam_id,
-        data-twitch=user.twitch_id,
-        data-deathmatch=user.deathmatch_id,
-        data-nedb=user._id
+        data-twitch=user.twitch_id
       )
 
     img(
       class="user-avatar",
-      src=user.deathmatch_avatar || user.steam_avatar_medium || user.twitch_avatar,
+      src=user.steam_avatar_medium || user.twitch_avatar,
       alt=user.display_name
     )

@@ -11,10 +11,13 @@ block content
   div(class="lobby-controls")
 
     div(class="clients-status")
-      select(id="client-list", class="lobby-control lobby-list", multiple)
+      select(class="lobby-control lobby-list", multiple)
+        optgroup(id="client-list") Chatting
 
     div(class="lobby-status")
-      select(id="lobby-players", class="lobby-list lobby-control", multiple)
+      select(class="lobby-list lobby-control", multiple)
+        optgroup(id="lobby-players") Playing
+
       div(class="lobby-buttons")
         button(id="lobby-add", class="lobby-control lobby-button") !add
         button(id="lobby-rem", class="lobby-control lobby-button") !rem
