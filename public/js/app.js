@@ -53,6 +53,7 @@ function announceJoined(who, next) {
   var div = document.createElement('div');
   div.textContent = who.displayname + ' connected';
   one('main').appendChild(div);
+  one('.main.messages').scrollTop = 99999999;
   if (typeof next === 'function') return next();
 }
 
@@ -60,6 +61,7 @@ function announceLeft(who, next) {
   var div = document.createElement('div');
   div.textContent = who.displayname + ' disconnected';
   one('main').appendChild(div);
+  one('.main.messages').scrollTop = 99999999;
   if (typeof next === 'function') return next();
 }
 
@@ -89,13 +91,9 @@ function addClient(who, to, next) {
 
 function removeClient(who, next) {
   if (who.socket) {
-    all('#' + ('socket_' + who.socket)).forEach(function(o) {
-      o.remove();
-    });
+    one('#socket_' + who.socket).remove();
   } else {
-    all('#' + ('id_' + who.id)).forEach(function(o) {
-      o.remove();
-    });
+    one('#id_' + who.id).remove();
   }
   if (typeof next === 'function') return next(who);
 }
@@ -160,7 +158,7 @@ socket.on('lobby#add', function(who) {
 });
 
 socket.on('lobby#started', function(details) {
-  all('#lobby-players > *').forEach(function(option) {
+  all('#lobby-players > option').forEach(function(option) {
     option.remove();
   });
   one('main').innerHTML += '<div>[deathmat.ch]: Pickup has begun - Click <a href="' +
