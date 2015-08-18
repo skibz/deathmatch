@@ -1,4 +1,6 @@
 
+'use strict';
+
 module.exports = function(options) {
   var properties, key;
 

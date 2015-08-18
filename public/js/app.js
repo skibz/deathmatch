@@ -121,6 +121,8 @@ socket.on('client#identity', function() {
     Notification.requestPermission(function(permission) {
       if (permission === 'granted') {
         permission = true;
+      } else {
+        permission = false;
       }
     });
   } else {
@@ -158,10 +160,8 @@ socket.on('lobby#add', function(who) {
 });
 
 socket.on('lobby#started', function(details) {
-  [].slice.call(
-    one('#lobby-players').childNodes
-  ).forEach(function(child) {
-    child.remove();
+  all('#lobby-players > *').forEach(function(option) {
+    option.remove();
   });
   one('main').innerHTML += '<div>[deathmat.ch]: Pickup has begun - Click <a href="' +
     details.connect + '">here</a> to join!</div>';
@@ -171,7 +171,8 @@ socket.on('lobby#started', function(details) {
 });
 
 socket.on('lobby#postponed', function() {
-  console.log('lobby postponed');
+  one('main').innerHTML += '<div>[deathmat.ch]: There aren\'t enough players to begin. The one minute' +
+    ' countdown will begin again when there are twelve players.</div>';
 });
 
 one('#lobby-add').onclick = throttle(
@@ -199,7 +200,6 @@ one('#message-input').onkeydown = function(e) {
   } else {
     return;
   }
-
 };
 
 one('#message-send').onclick = throttle(function() {
@@ -212,7 +212,7 @@ one('#message-send').onclick = throttle(function() {
 
 one('#about').onclick = function(e) {
   one('.lobby-controls').style.display = 'none';
-  one('main').style.display = 'none';
+  one('.main').style.display = 'none';
   one('#message-form').style.display = 'none';
   one('#about-container').classList.remove('hidden');
 };
@@ -220,6 +220,6 @@ one('#about').onclick = function(e) {
 one('#back-to-chat').onclick = function(e) {
   one('#about-container').classList.add('hidden');
   one('.lobby-controls').style.display = '';
-  one('main').style.display = '';
+  one('.main').style.display = '';
   one('#message-form').style.display = '';
 };
