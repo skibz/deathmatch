@@ -21,5 +21,5 @@ module.exports = function() {
   }));
   this.use(bodyParser.json());
   this.use(bodyParser.urlencoded({extended: true}));
-  this.use(multer());
+  // this.use(multer());
 };
