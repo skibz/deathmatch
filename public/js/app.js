@@ -88,9 +88,15 @@ function addClient(who, to, next) {
 }
 
 function removeClient(who, next) {
-  all('#' + ('socket_' + who.socket || 'id_' + who.id)).forEach(function(o) {
-    o.remove();
-  });
+  if (who.socket) {
+    all('#' + ('socket_' + who.socket)).forEach(function(o) {
+      o.remove();
+    });
+  } else {
+    all('#' + ('id_' + who.id)).forEach(function(o) {
+      o.remove();
+    });
+  }
   if (typeof next === 'function') return next(who);
 }
 
