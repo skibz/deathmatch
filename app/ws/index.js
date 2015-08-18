@@ -16,12 +16,14 @@ module.exports = function() {
     format: 6,
     map: process.env.DEFAULT_MAP,
     timeout: 60000,
-    started: io.emit.bind(io, 'lobby#started', {
-      connect: 'steam://connect/' +
-        lobby._server.host + ':' +
-        lobby._server.port + '/' +
-        lobby._server.password
-    }),
+    started: function() {
+      io.emit('lobby#started', {
+        connect: 'steam://connect/' +
+          lobby._server.host + ':' +
+          lobby._server.port + '/' +
+          lobby._server.password
+      });
+    },
     postponed: io.emit.bind(io, 'lobby#postponed')
   });
 
