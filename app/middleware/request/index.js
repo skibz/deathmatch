@@ -8,7 +8,7 @@ var multer = require('multer');
 var SESSION_SECRET = process.env.SESSION_SECRET;
 
 module.exports = function() {
-  this.use(logger(process.env.NODE_ENV));
+  this.use(logger('dev'));
   this.use(methodOverride());
   this.use(session({
     resave: true,
