@@ -55,10 +55,12 @@ module.exports = function() {
     socket.on('lobby#player-add', function() {
       var client = clients[socket.id];
       lobby.add(client.displayname, function(added) {
-        io.emit('lobby#add', {
-          displayname: client.displayname,
-          id: client.steam || client.twitch
-        });
+        if (added) {
+          io.emit('lobby#add', {
+            displayname: client.displayname,
+            id: client.steam || client.twitch
+          });
+        }
       });
     });
 
