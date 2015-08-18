@@ -158,9 +158,7 @@ describe('lobby class', function() {
           var lobby = Lobby.create({
             format: 1,
             timeout: 10,
-            started: function() {
-              return done();
-            }
+            started: done
           });
           lobby.add('1');
           // expect(lobby._starter).to.equal(null);
@@ -189,9 +187,7 @@ describe('lobby class', function() {
           var lobby = Lobby.create({
             format: 1,
             timeout: 10,
-            postponed: function() {
-              return done();
-            }
+            postponed: done
           });
           lobby.add('1');
           // expect(lobby._starter).to.equal(null);
@@ -199,6 +195,30 @@ describe('lobby class', function() {
           // expect(lobby._starter).to.not.equal(null);
           lobby.rem('2');
           // expect(lobby._starter).to.be.null;
+        });
+      });
+
+      describe('#add', function() {
+        it('should execute a given callback when add is invoked', function(done) {
+          var lobby = Lobby.create({
+            format: 1,
+            timeout: 10
+          });
+          lobby.add('abc', function(added) {
+            done();
+          });
+        });
+      });
+      describe('#rem', function() {
+        it('should execute a given callback when rem is invoked', function(done) {
+          var lobby = Lobby.create({
+            format: 1,
+            timeout: 10
+          });
+          lobby.add('abc');
+          lobby.rem('abc', function(removed) {
+            done();
+          });
         });
       });
     });

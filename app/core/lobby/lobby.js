@@ -5,13 +5,20 @@ var objectry = require('../objectry');
 
 module.exports = {
   prototype: {
-    add: function(player) {
-      if (this.isAdded(player) || this.isFull()) return;
+    add: function(player, done) {
+      if (this.isAdded(player) || this.isFull()) {
+        return typeof done === 'function' ? done(false) : undefined;
+      }
       this._players[player] = player;
       this.tryBeginStarting();
+      return typeof done === 'function' ? done(true) : undefined;
     },
-    rem: function(player) {
-      if (this.isAdded(player)) delete this._players[player];
+    rem: function(player, done) {
+      if (this.isAdded(player)) {
+        delete this._players[player];
+        return typeof done === 'function' ? done(true) : undefined;
+      }
+      return typeof done === 'function' ? done(false) : undefined;
     },
     isAdded: function(player) {
       return player in this._players;
