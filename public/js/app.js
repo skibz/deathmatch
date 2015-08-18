@@ -182,6 +182,8 @@ one('#message-input').onkeydown = function(e) {
   // shit
 
   if (e.keyCode === 13 && !e.shiftKey) {
+    e.preventDefault();
+    e.stopPropagation();
     var message = {
       sender: one('[data-displayname]').getAttribute('data-displayname'),
       body: one('#message-input').value
@@ -190,6 +192,7 @@ one('#message-input').onkeydown = function(e) {
   } else if (e.keyCode === 9) {
     // pressing tab
     e.preventDefault();
+    e.stopPropagation();
     one('#message-input').value += '\t';
   } else {
     return;
