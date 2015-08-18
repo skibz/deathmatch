@@ -53,25 +53,25 @@ module.exports = function() {
     });
 
     socket.on('lobby#player-add', function() {
-      var player = clients[socket.id].displayname;
-      if (!lobby.isAdded(player)) {
+      var client = clients[socket.id];
+      lobby.add(client.displayname, function(added) {
         io.emit('lobby#add', {
-          displayname: player,
-          id: clients[socket.id].steam || clients[socket.id].twitch
+          displayname: client.displayname,
+          id: client.steam || client.twitch
         });
-        lobby.add(player);
-      }
+      });
     });
 
     socket.on('lobby#player-rem', function() {
-      var player = clients[socket.id].displayname;
-      if (lobby.isAdded(player)) {
-        io.emit('lobby#rem', {
-          displayname: player,
-          id: clients[socket.id].steam || clients[socket.id].twitch
-        });
-        lobby.rem(player);
-      }
+      var client = clients[socket.id];
+      lobby.rem(client.displayname, function(removed) {
+        if (removed) {
+          io.emit('lobby#rem', {
+            displayname: client.displayname,
+            id: client.steam || client.twitch
+          });
+        }
+      });
     });
 
     socket.on('error', console.error.bind(console));
@@ -79,14 +79,14 @@ module.exports = function() {
     socket.on('disconnect', function() {
       var client = clients[socket.id];
       io.emit('chat#left', client);
-      var player = client.displayname;
-      if (lobby.isAdded(player)) {
-        lobby.rem(player);
-        io.emit('lobby#rem', {
-          displayname: player,
-          id: clients[socket.id].steam || clients[socket.id].twitch
-        });
-      }
+      lobby.rem(client.displayname, function(removed) {
+        if (removed) {
+          io.emit('lobby#rem', {
+            displayname: client.displayname,
+            id: client.steam || client.twitch
+          });
+        }
+      });
       delete clients[socket.id];
     });
 
