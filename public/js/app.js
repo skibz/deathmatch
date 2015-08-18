@@ -169,11 +169,11 @@ socket.on('lobby#postponed', function() {
 });
 
 one('#lobby-add').onclick = throttle(
-  socket.emit.bind(socket, 'lobby#player-add'), 1000
+  socket.emit.bind(socket, 'lobby#player-add'), 100
 );
 
 one('#lobby-rem').onclick = throttle(
-  socket.emit.bind(socket, 'lobby#player-rem'), 1000
+  socket.emit.bind(socket, 'lobby#player-rem'), 100
 );
 
 one('#message-input').onkeydown = function(e) {
