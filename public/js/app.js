@@ -113,10 +113,6 @@ var socket = io();
 var user = one('#user');
 var permission;
 
-socket.on('client#refresh', function() {
-  window.location.assign('http://deathmat.ch/logout');
-});
-
 socket.on('client#identity', function() {
 
   if ('Notification' in window) {
