@@ -67,18 +67,6 @@ function addClient(who, to, next) {
   option.setAttribute('data-steam', who.steam);
   option.setAttribute('data-twitch', who.twitch);
   option.setAttribute('data-socket', who.socket);
-  option.title = who.steam ?
-    'Double click to open Steam chat with this user' :
-    'Double click to open the Twitch profile of this user';
-    
-  option.ondblclick = function(e) {
-    var steam = e.target.getAttribute('data-steam');
-    window.open(
-      steam === null ? 'http://www.twitch.tv/' + e.target.textContent + '/profile' :
-        'steam://friends/message/' + steam
-    );
-  };
-  
   select.appendChild(option);
   if (typeof next === 'function') return next(who);
 }
