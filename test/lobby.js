@@ -201,6 +201,13 @@ describe('lobby class', function() {
       });
 
       describe('#add', function() {
+        it('should return undefined if no callback is given', function() {
+          var lobby = Lobby.create({
+            format: 1,
+            timeout: 10
+          });
+          expect(lobby.add('abc')).to.equal(undefined);
+        });
         it('should execute a given callback when add is invoked', function(done) {
           var lobby = Lobby.create({
             format: 1,
@@ -210,8 +217,28 @@ describe('lobby class', function() {
             done();
           });
         });
+        it('should execute a given callback with the result of the operation', function(done) {
+          var lobby = Lobby.create({
+            format: 1,
+            timeout: 10
+          });
+          lobby.add('abc', function(added) {
+            expect(added).to.equal(true);
+            lobby.add('abc', function(added) {
+              expect(added).to.equal(false);
+              return done();
+            });
+          });
+        });
       });
       describe('#rem', function() {
+        it('should return undefined if no callback is given', function() {
+          var lobby = Lobby.create({
+            format: 1,
+            timeout: 10
+          });
+          expect(lobby.rem('abc')).to.equal(undefined);
+        });
         it('should execute a given callback when rem is invoked', function(done) {
           var lobby = Lobby.create({
             format: 1,
@@ -220,6 +247,21 @@ describe('lobby class', function() {
           lobby.add('abc');
           lobby.rem('abc', function(removed) {
             done();
+          });
+        });
+        it('should execute a given callback with the result of the operation', function(done) {
+          var lobby = Lobby.create({
+            format: 1,
+            timeout: 10
+          });
+          lobby.add('abc', function(added) {
+            lobby.rem('abc', function(removed) {
+              expect(removed).to.equal(true);
+              lobby.rem('abc', function(removed) {
+                expect(removed).to.equal(false);
+                return done();
+              });
+            });
           });
         });
       });
