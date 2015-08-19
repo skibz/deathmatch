@@ -163,9 +163,7 @@ describe('lobby class', function() {
             started: done
           });
           lobby.add('1');
-          // expect(lobby._starter).to.equal(null);
           lobby.add('2');
-          // expect(lobby._starter).to.not.equal(null);
         });
         it('should reset the object back to default state after the _started callback has been invoked', function(done) {
           var lobby = Lobby.create({
@@ -179,9 +177,7 @@ describe('lobby class', function() {
             }
           });
           lobby.add('1');
-          // expect(lobby._starter).to.equal(null);
           lobby.add('2');
-          // expect(lobby._starter).to.not.equal(null);
         });
       });
       describe('_postponed', function() {
@@ -192,11 +188,8 @@ describe('lobby class', function() {
             postponed: done
           });
           lobby.add('1');
-          // expect(lobby._starter).to.equal(null);
           lobby.add('2');
-          // expect(lobby._starter).to.not.equal(null);
           lobby.rem('2');
-          // expect(lobby._starter).to.be.null;
         });
       });
 

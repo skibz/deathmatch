@@ -30,6 +30,7 @@
 
 ##### nice to have
 
+- [ ] player stats: `http://logs.tf/json_search?uploader=STEAM_0:0:16807487` `http://logs.tf/json_search?uploader=STEAM_0:1:15659092` `http://logs.tf/json/<log_id>`
 - [ ] nickname tab-completion
 - [ ] use websocket "rooms" to facilitate direct or scoped messages
 - [ ] moderation
