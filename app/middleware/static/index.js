@@ -1,9 +1,7 @@
 
-var FAVICON = process.env.FAVICON;
-var STATIC = process.env.STATIC;
+'use strict';
 
 module.exports = function() {
-
-  this.use(this.get('express.static')(STATIC));
-  this.use(require('serve-favicon')(FAVICON));
+  this.use(this.get('express.static')(process.env.STATIC));
+  this.use(require('serve-favicon')(process.env.FAVICON));
 };

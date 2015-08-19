@@ -18,10 +18,6 @@ var TWITCH_REDIRECT_URI = NODE_ENV === 'development' ?
   HOST + ':' + PORT + process.env.TWITCH_REDIRECT_URI :
   HOST + process.env.TWITCH_REDIRECT_URI;
 
-var STEAM_API_KEY = process.env.STEAM_API_KEY;
-var TWITCH_CLIENT_ID = process.env.TWITCH_CLIENT_ID;
-var TWITCH_CLIENT_SECRET = process.env.TWITCH_CLIENT_SECRET;
-
 module.exports = function() {
 
   this.use(passport.initialize());
@@ -36,7 +32,7 @@ module.exports = function() {
   });
 
   passport.use(new SteamStrategy({
-    apiKey: STEAM_API_KEY,
+    apiKey: process.env.STEAM_API_KEY,
     returnURL: STEAM_REDIRECT_URI,
     realm: HOST
   }, function(id, profile, done) {
@@ -53,8 +49,8 @@ module.exports = function() {
   }));
 
   passport.use(new TwitchStrategy({
-    clientID: TWITCH_CLIENT_ID,
-    clientSecret: TWITCH_CLIENT_SECRET,
+    clientID: process.env.TWITCH_CLIENT_ID,
+    clientSecret: process.env.TWITCH_CLIENT_SECRET,
     callbackURL: TWITCH_REDIRECT_URI,
     scope: 'user_read'
   }, function(accessToken, refreshToken, profile, done) {

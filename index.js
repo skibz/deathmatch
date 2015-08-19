@@ -1,47 +1,34 @@
 
 'use strict';
 
-var http = require('http'), server;
+var server;
 var express = require('express');
 var app = express();
 
-var PORT = process.env.PORT;
-var VIEWS = process.env.VIEWS;
-var VIEW_ENGINE = process.env.VIEW_ENGINE;
-var HOST = process.env.HOST;
-
-// set the port
-app.set('port', PORT);
-
-// set up the view engine
-app.set('views', VIEWS);
-app.set('view engine', VIEW_ENGINE);
-
-// make static accessible for various middlewares
+app.set('port', process.env.PORT);
+app.set('views', process.env.VIEWS);
+app.set('view engine', process.env.VIEW_ENGINE);
 app.set('express.static', express.static);
-
 app.set('lobby.servers', JSON.parse(process.env.SERVERS_JSON));
 app.set('lobby.admins', JSON.parse(process.env.ADMINS_JSON));
 app.set('lobby.maps', JSON.parse(process.env.MAPS_JSON));
 
-// attach the middleware layers
 require('./app/middleware/static').call(app);
 require('./app/middleware/request').call(app);
 require('./app/middleware/auth').call(app);
 
-// initialise the websocket server
-server = http.createServer(app);
-
-// bind the app routes
 require('./app/routes/auth').call(app);
 require('./app/routes/index').call(app);
 
-// bind the websocket events
-require('./app/ws').call({http: server, express: app});
+server = require('http').createServer(app);
 
-// bind the server socket
+require('./app/ws').call({
+  http: server,
+  express: app
+});
+
 process.nextTick(function() {
   server.listen(app.get('port'), function() {
-    console.log('server listening on', HOST, app.get('port'));
+    console.log('server running in mode', process.env.NODE_ENV);
   });
 });

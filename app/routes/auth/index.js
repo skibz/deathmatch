@@ -16,15 +16,19 @@ module.exports = function() {
     scope: ['user_read']
   }));
 
-  this.get(STEAM_REDIRECT_URI, passport.authenticate(
-    'steam', failureRedirect
-  ), function(req, res) {
-    res.redirect('/');
-  });
+  this.get(
+    process.env.STEAM_REDIRECT_URI,
+    passport.authenticate('steam', failureRedirect),
+    function(req, res) {
+      res.redirect('/');
+    }
+  );
 
-  this.get(TWITCH_REDIRECT_URI, passport.authenticate(
-    'twitchtv', failureRedirect
-  ), function(req, res) {
-    res.redirect('/');
-  });
+  this.get(
+    process.env.TWITCH_REDIRECT_URI,
+    passport.authenticate('twitchtv', failureRedirect),
+    function(req, res) {
+      res.redirect('/');
+    }
+  );
 };

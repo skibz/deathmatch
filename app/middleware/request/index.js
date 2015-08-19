@@ -1,25 +1,18 @@
 
-var logger = require('morgan');
-var methodOverride = require('method-override');
-var session = require('express-session');
-var bodyParser = require('body-parser');
-var multer = require('multer');
+'use strict';
 
-var SESSION_SECRET = process.env.SESSION_SECRET;
+var bodyParser = require('body-parser');
 
 module.exports = function() {
-
   if (process.env.NODE_ENV === 'development') {
-    this.use(logger('dev'));
+    this.use(require('morgan')('dev'));
   }
-
-  this.use(methodOverride());
-  this.use(session({
+  this.use(require('method-override')());
+  this.use(require('express-session')({
     resave: true,
     saveUninitialized: true,
-    secret: SESSION_SECRET
+    secret: process.env.SESSION_SECRET
   }));
   this.use(bodyParser.json());
   this.use(bodyParser.urlencoded({extended: true}));
-  // this.use(multer());
 };

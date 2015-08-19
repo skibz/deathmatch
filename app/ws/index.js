@@ -17,14 +17,14 @@ module.exports = function() {
     map: process.env.DEFAULT_MAP,
     timeout: 60000,
     started: function() {
-      io.emit('lobby#started', {
+      io.sockets.emit('lobby#started', {
         connect: 'steam://connect/' +
           lobby._server.host + ':' +
           lobby._server.port + '/' +
           lobby._server.password
       });
     },
-    postponed: io.emit.bind(io, 'lobby#postponed')
+    postponed: io.sockets.emit.bind(io, 'lobby#postponed')
   });
 
   io.on('connection', function(socket) {
