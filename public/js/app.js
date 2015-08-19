@@ -3,11 +3,11 @@
 
 function throttle(callback, limit) {
   var wait = false;
-  return function () {
+  return function() {
     if (wait) return;
     callback();
     wait = true;
-    setTimeout(function () {
+    setTimeout(function() {
       wait = false;
     }, limit);
   };
@@ -26,24 +26,24 @@ function all(selector) {
 function appendMessage(message, next) {
   var div = document.createElement('div');
   div.textContent = message.sender + ': ' + message.body;
-  one('main').appendChild(div);
-  one('.main.messages').scrollTop = 99999999;
+  one('.main').appendChild(div);
+  one('.main.messages').scrollTop = Number.MAX_VALUE;
   if (typeof next === 'function') return next(message);
 }
 
 function announceJoined(who, next) {
   var div = document.createElement('div');
   div.textContent = who.displayname + ' connected';
-  one('main').appendChild(div);
-  one('.main.messages').scrollTop = 99999999;
+  one('.main').appendChild(div);
+  one('.main.messages').scrollTop = Number.MAX_VALUE;
   if (typeof next === 'function') return next();
 }
 
 function announceLeft(who, next) {
   var div = document.createElement('div');
   div.textContent = who.displayname + ' disconnected';
-  one('main').appendChild(div);
-  one('.main.messages').scrollTop = 99999999;
+  one('.main').appendChild(div);
+  one('.main.messages').scrollTop = Number.MAX_VALUE;
   if (typeof next === 'function') return next();
 }
 
@@ -105,17 +105,13 @@ function messageSubmit(message) {
 
 var socket = io();
 var user = one('#user');
-var permission;
+var notifications;
 
 socket.on('client#identity', function() {
 
   if ('Notification' in window) {
-    Notification.requestPermission(function(permission) {
-      if (permission === 'granted') {
-        permission = true;
-      } else {
-        permission = false;
-      }
+    Notification.requestPermission(function (permission) {
+      notifications = permission === 'granted' ? true : false;
     });
   } else {
     alert(
@@ -157,7 +153,7 @@ socket.on('lobby#started', function(details) {
   });
   one('main').innerHTML += '<div>[deathmat.ch]: Pickup has begun - Click <a href="' +
     details.connect + '">here</a> to join!</div>';
-  if (!permission) return;
+  if (!notifications) return;
   var notification = new Notification('Pickup has begun!', {body: 'Click this message to join'});
   notification.onclick = window.open.bind(window, details.connect);
 });
