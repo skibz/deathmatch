@@ -48,9 +48,11 @@ function announceLeft(who, next) {
 }
 
 function clientList(clients, next) {
-  for (var client in clients) addClient(
-    clients[client], one('#client-list')
-  );
+  var optgroup = one('#client-list');
+  for (var client in clients) {
+    addClient(clients[client], optgroup);
+  }
+  optgroup.label += ' [' + clients.length + ']';
   if (typeof next === 'function') return next();
 }
 
@@ -68,17 +70,20 @@ function addClient(who, to, next) {
   option.setAttribute('data-twitch', who.twitch);
   option.setAttribute('data-socket', who.socket);
   option.title = who.steam ?
-    'Double click to open Steam chat with this user' :
-    'Double click to open the Twitch profile of this user';
-    
+    'Double click to open this user\'s Steam profile' :
+    'Double click to open this user\'s Twitch profile';
+
   option.ondblclick = function(e) {
     var steam = e.target.getAttribute('data-steam');
-    window.open(
-      steam !== 'null' ? 'steam://friends/message/' + steam :
+    if (steam !== 'null') {
+      window.location.assign('steam://url/SteamIDPage/' + steam);
+    } else {
+      window.open(
         'http://www.twitch.tv/' + e.target.textContent + '/profile'
-    );
+      );
+    }
   };
-  
+
   select.appendChild(option);
   if (typeof next === 'function') return next(who);
 }
@@ -86,8 +91,12 @@ function addClient(who, to, next) {
 function removeClient(who, next) {
   if (who.socket) {
     one('#socket_' + who.socket).remove();
+    one('#client-list').label = 'Chatting [' +
+      all('#client-list > option').length + ']';
   } else {
     one('#id_' + who.id).remove();
+    one('#lobby-players').label = 'Playing [' +
+      (all('#lobby-players > option') || []).length + ']';
   }
   if (typeof next === 'function') return next(who);
 }
@@ -108,19 +117,19 @@ var user = one('#user');
 var notifications;
 
 socket.on('client#identity', function() {
-
   if ('Notification' in window) {
-    Notification.requestPermission(function (permission) {
+    Notification.requestPermission(function(permission) {
       notifications = permission === 'granted' ? true : false;
     });
   } else {
-    alert(
-      'Hey, I\'m afraid you won\'t be able to use this ' +
-      'site until you update your browser to something more modern.'
-    );
-    window.location.assign('https://google.com/chrome');
+    if (window.confirm(
+      'Your browser is too outdated to use desktop notifications. ' +
+      'Please consider updating it to take advantage of this site\'s features. ' +
+      'Would you like to be redirected to a download page for Google Chrome?'
+    )) {
+      window.location.assign('https://google.com/chrome');
+    }
   }
-
   socket.emit('client#identify', {
     steam: user.getAttribute('data-steam'),
     displayname: user.getAttribute('data-displayname'),
@@ -141,21 +150,30 @@ socket.on('chat#left', function(who) {
 socket.on('lobby#rem', removeClient);
 
 socket.on('lobby#add', function(who) {
+  var optgroup = one('#lobby-players');
   var option = document.createElement('option');
   option.id = 'id_' + who.id;
   option.textContent = who.displayname;
-  one('#lobby-players').appendChild(option);
+  optgroup.appendChild(option);
+  optgroup.label = 'Playing [' + (all('#lobby-players > option') || []).length + ']';
 });
 
 socket.on('lobby#started', function(details) {
-  all('#lobby-players > option').forEach(function(option) {
+  all(
+    '#lobby-players > option'
+  ).forEach(function(option) {
     option.remove();
   });
+  one('#lobby-players').label = 'Playing [0]';
   one('main').innerHTML += '<div>[deathmat.ch]: Pickup has begun - Click <a href="' +
     details.connect + '">here</a> to join!</div>';
   if (!notifications) return;
-  var notification = new Notification('Pickup has begun!', {body: 'Click this message to join'});
-  notification.onclick = window.open.bind(window, details.connect);
+  var notification = new Notification('Pickup has begun!', {
+    body: 'Click here to join'
+  });
+  notification.onclick = function(e) {
+    window.location.assign(details.connect);
+  };
 });
 
 socket.on('lobby#postponed', function() {
@@ -181,7 +199,6 @@ one('#message-input').onkeydown = function(e) {
     };
     messageSubmit(message);
   } else if (e.keyCode === 9) {
-    // pressing tab
     e.preventDefault();
     e.stopPropagation();
     one('#message-input').value += '\t';
