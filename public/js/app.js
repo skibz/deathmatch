@@ -74,8 +74,7 @@ function addClient(who, to, next) {
   option.ondblclick = function(e) {
     var steam = e.target.getAttribute('data-steam');
     window.open(
-      !steam ?
-        'http://www.twitch.tv/' + e.target.textContent + '/profile' :
+      steam === null ? 'http://www.twitch.tv/' + e.target.textContent + '/profile' :
         'steam://friends/message/' + steam
     );
   };
