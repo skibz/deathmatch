@@ -23,6 +23,9 @@ module.exports = function() {
           lobby._server.port + '/' +
           lobby._server.password
       });
+      setImmediate(console.log.bind(
+        console, new Date(), 'lobby has started'
+      ));
     },
     postponed: io.sockets.emit.bind(io, 'lobby#postponed')
   });
@@ -88,7 +91,11 @@ module.exports = function() {
       delete clients[socket.id];
     });
 
-    socket.on('error', console.error.bind(console));
+    socket.on('error', function(err) {
+      setImmediate(console.error.bind(
+        console, new Date(), err
+      ));
+    });
 
   });
 };

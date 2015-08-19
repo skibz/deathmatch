@@ -36,6 +36,12 @@ module.exports = function() {
     returnURL: STEAM_REDIRECT_URI,
     realm: HOST
   }, function(id, profile, done) {
+
+    setImmediate(console.log.bind(
+      console, new Date(), 'log in by',
+      profile.id, profile.displayName
+    ));
+
     return done(null, {
       email: null,
       steam_id: profile.id,
@@ -54,6 +60,12 @@ module.exports = function() {
     callbackURL: TWITCH_REDIRECT_URI,
     scope: 'user_read'
   }, function(accessToken, refreshToken, profile, done) {
+
+    setImmediate(console.log.bind(
+      console, new Date(), 'log in by',
+      profile.id, profile.displayName
+    ));
+
     return done(null, {
       email: profile.email,
       steam_id: null,
