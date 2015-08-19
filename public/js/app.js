@@ -113,6 +113,10 @@ var socket = io();
 var user = one('#user');
 var permission;
 
+socket.on('client#refresh', function() {
+  window.location.assign('http://deathmat.ch/logout');
+});
+
 socket.on('client#identity', function() {
 
   if ('Notification' in window) {
@@ -128,7 +132,7 @@ socket.on('client#identity', function() {
       'Hey, I\'m afraid you won\'t be able to use this ' +
       'site until you update your browser to something more modern.'
     );
-    window.location = 'https://google.com/chrome';
+    window.location.assign('https://google.com/chrome');
   }
 
   socket.emit('client#identify', {

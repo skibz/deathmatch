@@ -30,6 +30,11 @@ module.exports = function() {
     postponed: io.sockets.emit.bind(io, 'lobby#postponed')
   });
 
+  // force any connected clients to
+  // refresh their web pages after
+  // server restart
+  io.emit('client#refresh');
+
   io.on('connection', function(socket) {
 
     socket.emit('client#identity');
