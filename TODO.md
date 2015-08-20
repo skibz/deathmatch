@@ -1,6 +1,7 @@
 
 ##### at least these things
 
+- [ ] add a faq
 - [ ] add an error route to express app
 - [x] add dist glue for js, css and images
 - [x] logo and favicon
