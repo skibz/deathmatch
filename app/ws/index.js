@@ -87,6 +87,11 @@ module.exports = function() {
 
     socket.on('disconnect', function() {
       var client = clients[socket.id];
+
+      // maybe if they haven't identified yet?
+      if (!client) return;
+
+      // otherwise...
       lobby.rem(client.displayname, function(removed) {
         if (removed) {
           io.emit('lobby#rem', {
