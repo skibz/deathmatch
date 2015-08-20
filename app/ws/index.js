@@ -46,6 +46,19 @@ module.exports = function() {
         return clients[client];
       }));
 
+      socket.emit('lobby#players', (function() {
+        var players = [];
+        for (var client in clients) {
+          if (lobby.isAdded(clients[client].displayname)) {
+            players.push({
+              id: clients[client].steam || clients[client].twitch,
+              displayname: clients[client].displayname
+            });
+          }
+        }
+        return players;
+      })());
+
       socket.broadcast.emit('chat#joined', clients[socket.id]);
     });
 

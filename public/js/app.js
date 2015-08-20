@@ -52,8 +52,19 @@ function clientList(clients, next) {
   for (var client in clients) {
     addClient(clients[client], optgroup);
   }
-  optgroup.label += ' [' + clients.length + ']';
+  optgroup.label += ' [' + (all('#client-list > option') || []).length + ']';
   if (typeof next === 'function') return next();
+}
+
+function lobbyList(clients, next) {
+  var optgroup = one('#lobby-players'), option;
+  for (var client in clients) {
+    option = document.createElement('option');
+    option.id = 'id_' + who.id;
+    option.textContent = who.displayname;
+    optgroup.appendChild(option);
+  }
+  optgroup.label = 'Playing [' + (all('#lobby-players > option') || []).length + ']';
 }
 
 function emitMessage(message, next) {
@@ -147,8 +158,8 @@ socket.on('chat#left', function(who) {
   removeClient(who, announceLeft);
 });
 
+socket.on('lobby#players', lobbyList);
 socket.on('lobby#rem', removeClient);
-
 socket.on('lobby#add', function(who) {
   var optgroup = one('#lobby-players');
   var option = document.createElement('option');
