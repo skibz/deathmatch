@@ -94,9 +94,9 @@ module.exports = function() {
             id: client.steam || client.twitch
           });
         }
+        io.emit('chat#left', client);
+        delete clients[socket.id];
       });
-      io.emit('chat#left', client);
-      delete clients[socket.id];
     });
 
     socket.on('error', console.error.bind(console));
