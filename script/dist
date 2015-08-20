@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# riot --ext jade --template jade public/js/tags public/tags.js
+
 rm public/bundle.*
 
 {
@@ -12,6 +14,14 @@ rm public/bundle.*
 
 {
   uglifyjs --screw-ie8 public/js/pace.setup.js
+  echo
   cat public/js/pace.min.js
+  echo
+  # uglifyjs public/js/riot.min.js
+  # echo
+  # uglifyjs public/tags.js
+  # echo
   uglifyjs --screw-ie8 public/js/app.js
 } >> public/bundle.js
+
+# rm public/tags.js
