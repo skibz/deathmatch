@@ -37,10 +37,9 @@ module.exports = function() {
     realm: HOST
   }, function(id, profile, done) {
 
-    setImmediate(console.log.bind(
-      console, new Date(), 'log in by',
+    console.log(new Date(), 'log in by',
       profile.id, profile.displayName
-    ));
+    );
 
     return done(null, {
       email: null,
@@ -61,10 +60,9 @@ module.exports = function() {
     scope: 'user_read'
   }, function(accessToken, refreshToken, profile, done) {
 
-    setImmediate(console.log.bind(
-      console, new Date(), 'log in by',
+    console.log(new Date(), 'log in by',
       profile.id, profile.displayName
-    ));
+    );
 
     return done(null, {
       email: profile.email,

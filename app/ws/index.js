@@ -23,9 +23,7 @@ module.exports = function() {
           lobby._server.port + '/' +
           lobby._server.password
       });
-      setImmediate(console.log.bind(
-        console, new Date(), 'lobby has started'
-      ));
+      console.log(new Date(), 'lobby has started');
     },
     postponed: io.sockets.emit.bind(io, 'lobby#postponed')
   });
@@ -41,11 +39,7 @@ module.exports = function() {
         twitch: who.twitch,
         steam: who.steam
       };
-
-      socket.emit('client#list', Object.keys(clients).map(function(client) {
-        return clients[client];
-      }));
-
+      socket.broadcast.emit('chat#joined', clients[socket.id]);
       socket.emit('lobby#players', (function() {
         var players = [];
         for (var client in clients) {
@@ -58,8 +52,9 @@ module.exports = function() {
         }
         return players;
       })());
-
-      socket.broadcast.emit('chat#joined', clients[socket.id]);
+      socket.emit('client#list', Object.keys(clients).map(function(client) {
+        return clients[client];
+      }));
     });
 
     socket.on('chat#message', function(message) {
@@ -92,7 +87,6 @@ module.exports = function() {
 
     socket.on('disconnect', function() {
       var client = clients[socket.id];
-      io.emit('chat#left', client);
       lobby.rem(client.displayname, function(removed) {
         if (removed) {
           io.emit('lobby#rem', {
@@ -101,14 +95,11 @@ module.exports = function() {
           });
         }
       });
+      io.emit('chat#left', client);
       delete clients[socket.id];
     });
 
-    socket.on('error', function(err) {
-      setImmediate(console.error.bind(
-        console, new Date(), err
-      ));
-    });
+    socket.on('error', console.error.bind(console));
 
   });
 };
