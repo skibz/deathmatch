@@ -60,8 +60,8 @@ function lobbyList(clients, next) {
   var optgroup = one('#lobby-players'), option;
   for (var client in clients) {
     option = document.createElement('option');
-    option.id = 'id_' + who.id;
-    option.textContent = who.displayname;
+    option.id = 'id_' + clients[client].id;
+    option.textContent = clients[client].displayname;
     optgroup.appendChild(option);
   }
   optgroup.label = 'Playing [' + (all('#lobby-players > option') || []).length + ']';
