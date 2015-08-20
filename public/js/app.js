@@ -95,7 +95,7 @@ function addClient(who, to, next) {
   };
 
   select.appendChild(option);
-  select.label += ' [' + (all('#client-list > option') || []).length + ']';
+  select.label = 'Chatting [' + (all('#client-list > option') || []).length + ']';
   if (typeof next === 'function') return next(who);
 }
 
