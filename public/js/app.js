@@ -52,7 +52,6 @@ function clientList(clients, next) {
   for (var client in clients) {
     addClient(clients[client], optgroup);
   }
-  optgroup.label += ' [' + (all('#client-list > option') || []).length + ']';
   if (typeof next === 'function') return next();
 }
 
