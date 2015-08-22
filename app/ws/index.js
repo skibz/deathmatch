@@ -13,11 +13,11 @@ module.exports = function() {
   var admins = this.express.get('lobby.admins');
   var lobby = Lobby.create({
     server: servers[process.env.DEFAULT_SERVER],
-    format: 6,
+    format: 2,
     map: process.env.DEFAULT_MAP,
     timeout: 60000,
     started: function() {
-      io.sockets.emit('lobby#started', {
+      io.emit('lobby#started', {
         connect: 'steam://connect/' +
           lobby._server.host + ':' +
           lobby._server.port + '/' +
@@ -25,7 +25,9 @@ module.exports = function() {
       });
       console.log(new Date(), 'lobby has started');
     },
-    postponed: io.sockets.emit.bind(io, 'lobby#postponed')
+    postponed: function() {
+      io.emit('lobby#postponed');
+    }
   });
 
   io.on('connection', function(socket) {
