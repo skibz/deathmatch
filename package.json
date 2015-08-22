@@ -1,6 +1,6 @@
 {
   "name": "deathmatch",
-  "version": "0.7.1",
+  "version": "0.8.0",
   "description": "Start a fight.",
   "main": "index.js",
   "private": true,
