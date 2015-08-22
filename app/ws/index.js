@@ -13,7 +13,7 @@ module.exports = function() {
   var admins = this.express.get('lobby.admins');
   var lobby = Lobby.create({
     server: servers[process.env.DEFAULT_SERVER],
-    format: 1,
+    format: 6,
     map: process.env.DEFAULT_MAP,
     timeout: 60000,
     started: function() {
@@ -26,6 +26,7 @@ module.exports = function() {
       console.log(new Date(), 'lobby has started');
     },
     postponed: function() {
+      console.log(new Date(), 'lobby was postponed');
       io.emit('lobby#postponed');
     }
   });
